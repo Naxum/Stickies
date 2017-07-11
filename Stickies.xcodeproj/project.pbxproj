@@ -14,7 +14,6 @@
 		9B800D571F1476A90002E65E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D551F1476A90002E65E /* LaunchScreen.storyboard */; };
 		9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D611F1477F10002E65E /* StickyWallViewController.swift */; };
 		9B800D651F14782C0002E65E /* StickyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D631F14782C0002E65E /* StickyCell.swift */; };
-		9B800D661F14782C0002E65E /* StickyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D641F14782C0002E65E /* StickyCell.xib */; };
 		9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		9B800D581F1476A90002E65E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B800D611F1477F10002E65E /* StickyWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallViewController.swift; sourceTree = "<group>"; };
 		9B800D631F14782C0002E65E /* StickyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyCell.swift; sourceTree = "<group>"; };
-		9B800D641F14782C0002E65E /* StickyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickyCell.xib; sourceTree = "<group>"; };
 		9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,11 +60,11 @@
 		9B800D481F1476A90002E65E /* Stickies */ = {
 			isa = PBXGroup;
 			children = (
+				9B800D581F1476A90002E65E /* Info.plist */,
 				9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */,
 				9B800D601F1477530002E65E /* Supporting Files */,
 				9B800D611F1477F10002E65E /* StickyWallViewController.swift */,
 				9B800D631F14782C0002E65E /* StickyCell.swift */,
-				9B800D641F14782C0002E65E /* StickyCell.xib */,
 				9B800D491F1476A90002E65E /* AppDelegate.swift */,
 				9B800D4D1F1476A90002E65E /* Main.storyboard */,
 			);
@@ -78,7 +76,6 @@
 			children = (
 				9B800D551F1476A90002E65E /* LaunchScreen.storyboard */,
 				9B800D501F1476A90002E65E /* Stickies.xcdatamodeld */,
-				9B800D581F1476A90002E65E /* Info.plist */,
 				9B800D531F1476A90002E65E /* Assets.xcassets */,
 			);
 			path = "Supporting Files";
@@ -144,7 +141,6 @@
 			files = (
 				9B800D571F1476A90002E65E /* LaunchScreen.storyboard in Resources */,
 				9B800D541F1476A90002E65E /* Assets.xcassets in Resources */,
-				9B800D661F14782C0002E65E /* StickyCell.xib in Resources */,
 				9B800D4F1F1476A90002E65E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

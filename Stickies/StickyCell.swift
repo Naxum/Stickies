@@ -27,6 +27,10 @@ class StickyCell: UICollectionViewCell {
     override func prepareForReuse() {
         thumbnail = nil
     }
+    
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        let attributes = layoutAttributes as! StickyWallLayoutAttributes
+    }
 
 }
 

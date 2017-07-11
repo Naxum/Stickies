@@ -8,15 +8,18 @@
 
 import UIKit
 
+fileprivate let gridRows:CGFloat = 4.0
+
 class StickyWallLayout: UICollectionViewLayout {
+    override class var layoutAttributesClass:AnyClass { return StickyWallLayoutAttributes.self }
+    
     let gridPadding:CGFloat = 8.0
-    let gridRows:CGFloat = 4.0
     
     var gridSize:CGFloat {
         return (collectionView!.bounds.height / gridRows) - (gridRows * gridPadding)
     }
     
-    override class var layoutAttributesClass:AnyClass { return StickyWallLayoutAttributes.self }
+    var attributesList = [StickyWallLayoutAttributes]()
     
     override var collectionViewContentSize: CGSize {
         var gridWidth:CGFloat = 0.0
@@ -25,8 +28,8 @@ class StickyWallLayout: UICollectionViewLayout {
         for sectionIndex in 0..<collectionView!.numberOfSections {
             var bounds = StickyGridBounds()
             for itemIndex in 0..<collectionView!.numberOfItems(inSection: sectionIndex) {
-                let stickyCell = collectionView!.cellForItem(at: IndexPath(item: itemIndex, section: sectionIndex)) as! StickyCell
-                bounds.encapsulate(position: stickyCell.position)
+                let attributes = layoutAttributesForItem(at: IndexPath(item: itemIndex, section: sectionIndex)) as! StickyWallLayoutAttributes
+                bounds.encapsulate(position: attributes.position)
             }
             gridWidth += bounds.toCGSize().width
         }
@@ -37,7 +40,22 @@ class StickyWallLayout: UICollectionViewLayout {
     override func prepare() {
         super.prepare()
         
-        //TODO: Prepare layout
+        for sectionIndex in 0..<collectionView!.numberOfSections {
+            for itemIndex in 0..<collectionView!.numberOfItems(inSection: sectionIndex) {
+                let indexPath = IndexPath(item: itemIndex, section: sectionIndex)
+                let attributes = StickyWallLayoutAttributes(forCellWith: indexPath)
+                attributes.position = StickyGridPosition(x: Int(floor(CGFloat(itemIndex) / gridRows)), y: itemIndex % Int(gridRows))
+                attributesList.append(attributes)
+            }
+        }
+    }
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return attributesList
+    }
+    
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return attributesList.first { $0.indexPath == indexPath }
     }
 }
 
