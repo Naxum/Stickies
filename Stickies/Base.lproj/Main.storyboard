@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Sticky Wall Collection View Controller-->
+        <!--Sticky Wall View Controller-->
         <scene sceneID="05G-6v-98J">
             <objects>
-                <collectionViewController id="id3-UM-6tJ" customClass="StickyWallCollectionViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="id3-UM-6tJ" customClass="StickyWallViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="d45-5G-yEU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

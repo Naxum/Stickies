@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class StickyWallCollectionViewController: UICollectionViewController {
+class StickyWallViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

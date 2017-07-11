@@ -12,7 +12,7 @@
 		9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D501F1476A90002E65E /* Stickies.xcdatamodeld */; };
 		9B800D541F1476A90002E65E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D531F1476A90002E65E /* Assets.xcassets */; };
 		9B800D571F1476A90002E65E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D551F1476A90002E65E /* LaunchScreen.storyboard */; };
-		9B800D621F1477F10002E65E /* StickyWallCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D611F1477F10002E65E /* StickyWallCollectionViewController.swift */; };
+		9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D611F1477F10002E65E /* StickyWallViewController.swift */; };
 		9B800D651F14782C0002E65E /* StickyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D631F14782C0002E65E /* StickyCell.swift */; };
 		9B800D661F14782C0002E65E /* StickyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D641F14782C0002E65E /* StickyCell.xib */; };
 /* End PBXBuildFile section */
@@ -25,7 +25,7 @@
 		9B800D531F1476A90002E65E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B800D561F1476A90002E65E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B800D581F1476A90002E65E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9B800D611F1477F10002E65E /* StickyWallCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallCollectionViewController.swift; sourceTree = "<group>"; };
+		9B800D611F1477F10002E65E /* StickyWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallViewController.swift; sourceTree = "<group>"; };
 		9B800D631F14782C0002E65E /* StickyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyCell.swift; sourceTree = "<group>"; };
 		9B800D641F14782C0002E65E /* StickyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickyCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				9B800D601F1477530002E65E /* Supporting Files */,
-				9B800D611F1477F10002E65E /* StickyWallCollectionViewController.swift */,
+				9B800D611F1477F10002E65E /* StickyWallViewController.swift */,
 				9B800D631F14782C0002E65E /* StickyCell.swift */,
 				9B800D641F14782C0002E65E /* StickyCell.xib */,
 				9B800D491F1476A90002E65E /* AppDelegate.swift */,
@@ -156,7 +156,7 @@
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
 				9B800D651F14782C0002E65E /* StickyCell.swift in Sources */,
-				9B800D621F1477F10002E65E /* StickyWallCollectionViewController.swift in Sources */,
+				9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +336,7 @@
 				9B800D5D1F1476A90002E65E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
