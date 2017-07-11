@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */; };
 		9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D491F1476A90002E65E /* AppDelegate.swift */; };
 		9B800D4F1F1476A90002E65E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D4D1F1476A90002E65E /* Main.storyboard */; };
 		9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D501F1476A90002E65E /* Stickies.xcdatamodeld */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
 		9B800D461F1476A90002E65E /* Stickies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stickies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B800D491F1476A90002E65E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B800D4E1F1476A90002E65E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				9B800D581F1476A90002E65E /* Info.plist */,
 				9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */,
+				9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */,
 				9B800D601F1477530002E65E /* Supporting Files */,
 				9B800D611F1477F10002E65E /* StickyWallViewController.swift */,
 				9B800D631F14782C0002E65E /* StickyCell.swift */,
@@ -156,6 +159,7 @@
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
 				9B800D651F14782C0002E65E /* StickyCell.swift in Sources */,
+				9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */,
 				9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

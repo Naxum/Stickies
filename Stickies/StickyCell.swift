@@ -29,7 +29,10 @@ class StickyCell: UICollectionViewCell {
     }
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        let attributes = layoutAttributes as! StickyWallLayoutAttributes
+        super.apply(layoutAttributes)
+        
+        //let attributes = layoutAttributes as! StickyWallLayoutAttributes
+        
     }
 
 }
@@ -37,10 +40,6 @@ class StickyCell: UICollectionViewCell {
 struct StickyGridPosition {
     var x:Int
     var y:Int
-    
-    func toCGPoint() -> CGPoint {
-        return CGPoint(x: CGFloat(x) * 0.5, y: CGFloat(y) * 0.5)
-    }
 }
 
 struct StickyGridBounds {
@@ -53,10 +52,5 @@ struct StickyGridBounds {
         if pos.y > maxPosition.y {
             maxPosition.y = pos.y
         }
-    }
-    
-    func toCGSize() -> CGSize {
-        let point = maxPosition.toCGPoint()
-        return CGSize(width: point.x, height: point.y)
     }
 }

@@ -8,15 +8,17 @@
 
 import UIKit
 
-fileprivate let gridRows:CGFloat = 4.0
+fileprivate let stickyRows:CGFloat = 4.0
+fileprivate let gridRows:CGFloat = stickyRows * 2 // half steps!
 
 class StickyWallLayout: UICollectionViewLayout {
     override class var layoutAttributesClass:AnyClass { return StickyWallLayoutAttributes.self }
     
     let gridPadding:CGFloat = 8.0
+    let sectionPadding:CGFloat = 32.0
     
-    var gridSize:CGFloat {
-        return (collectionView!.bounds.height / gridRows) - (gridRows * gridPadding)
+    var stickySize:CGFloat {
+        return (collectionView!.bounds.height / stickyRows) - ((stickyRows - 2) * gridPadding)
     }
     
     var attributesList = [StickyWallLayoutAttributes]()
@@ -26,27 +28,41 @@ class StickyWallLayout: UICollectionViewLayout {
         let height = collectionView!.bounds.height //height should always be the same
         
         for sectionIndex in 0..<collectionView!.numberOfSections {
-            var bounds = StickyGridBounds()
+            var sectionBounds = StickyGridBounds()
             for itemIndex in 0..<collectionView!.numberOfItems(inSection: sectionIndex) {
                 let attributes = layoutAttributesForItem(at: IndexPath(item: itemIndex, section: sectionIndex)) as! StickyWallLayoutAttributes
-                bounds.encapsulate(position: attributes.position)
+                sectionBounds.encapsulate(position: attributes.position)
             }
-            gridWidth += bounds.toCGSize().width
+            gridWidth += CGFloat(sectionBounds.maxPosition.x) * 0.5 * stickySize + (CGFloat(sectionBounds.maxPosition.x + 1) * gridPadding)
         }
         
-        return CGSize(width: gridWidth * gridSize, height: height)
+        return CGSize(width: gridWidth, height: height)
     }
     
     override func prepare() {
         super.prepare()
         
+        var sectionOffset:CGFloat = 0
         for sectionIndex in 0..<collectionView!.numberOfSections {
+            var maxPosX:CGFloat = 0
             for itemIndex in 0..<collectionView!.numberOfItems(inSection: sectionIndex) {
                 let indexPath = IndexPath(item: itemIndex, section: sectionIndex)
+                let gridPosX = Int(floor(CGFloat(itemIndex * 2) / gridRows) * 2)
+                let gridPosY = (itemIndex * 2) % Int(gridRows)
+                
                 let attributes = StickyWallLayoutAttributes(forCellWith: indexPath)
-                attributes.position = StickyGridPosition(x: Int(floor(CGFloat(itemIndex) / gridRows)), y: itemIndex % Int(gridRows))
+                attributes.position = StickyGridPosition(x: gridPosX, y: gridPosY)
+                attributes.size = CGSize(width: stickySize, height: stickySize)
+                let posX = CGFloat(gridPosX) * 0.5 * stickySize + sectionOffset
+                let posY = CGFloat(gridPosY) * 0.5 * stickySize
+                let padding = CGPoint(x: gridPosX, y: gridPosY) * gridPadding
+                attributes.center = CGPoint(x: posX, y: posY) + CGPoint(xy: stickySize * 0.5) + padding
+                if attributes.center.x > maxPosX {
+                    maxPosX = attributes.center.x
+                }
                 attributesList.append(attributes)
             }
+            sectionOffset += sectionPadding + maxPosX + (stickySize * 0.5)
         }
     }
     
