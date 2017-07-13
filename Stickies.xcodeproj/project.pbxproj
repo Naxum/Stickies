@@ -15,7 +15,9 @@
 		9B800D571F1476A90002E65E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D551F1476A90002E65E /* LaunchScreen.storyboard */; };
 		9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D611F1477F10002E65E /* StickyWallViewController.swift */; };
 		9B800D651F14782C0002E65E /* StickyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D631F14782C0002E65E /* StickyCell.swift */; };
+		9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */; };
 		9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */; };
+		9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFB48FD1F17246600ABF564 /* StickyHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +31,9 @@
 		9B800D581F1476A90002E65E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B800D611F1477F10002E65E /* StickyWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallViewController.swift; sourceTree = "<group>"; };
 		9B800D631F14782C0002E65E /* StickyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyCell.swift; sourceTree = "<group>"; };
+		9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBoardViewController.swift; sourceTree = "<group>"; };
 		9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallLayout.swift; sourceTree = "<group>"; };
+		9BFB48FD1F17246600ABF564 /* StickyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,9 +71,11 @@
 				9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */,
 				9B800D601F1477530002E65E /* Supporting Files */,
 				9B800D611F1477F10002E65E /* StickyWallViewController.swift */,
+				9BFB48FD1F17246600ABF564 /* StickyHelper.swift */,
 				9B800D631F14782C0002E65E /* StickyCell.swift */,
 				9B800D491F1476A90002E65E /* AppDelegate.swift */,
 				9B800D4D1F1476A90002E65E /* Main.storyboard */,
+				9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */,
 			);
 			path = Stickies;
 			sourceTree = "<group>";
@@ -156,8 +162,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */,
+				9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */,
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
+				9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */,
 				9B800D651F14782C0002E65E /* StickyCell.swift in Sources */,
 				9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */,
 				9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */,

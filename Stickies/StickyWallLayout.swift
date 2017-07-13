@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 fileprivate let stickyRows:CGFloat = 4.0
 fileprivate let gridRows:CGFloat = stickyRows * 2 // half steps!
 
 class StickyWallLayout: UICollectionViewLayout {
     override class var layoutAttributesClass:AnyClass { return StickyWallLayoutAttributes.self }
-    
+	
     let gridPadding:CGFloat = 8.0
     let sectionPadding:CGFloat = 64.0
     
@@ -22,7 +23,7 @@ class StickyWallLayout: UICollectionViewLayout {
     }
     
     var attributesList = [StickyWallLayoutAttributes]()
-    
+	
     override var collectionViewContentSize: CGSize {
         var gridWidth:CGFloat = 0.0
         let height = collectionView!.bounds.height //height should always be the same
@@ -45,11 +46,20 @@ class StickyWallLayout: UICollectionViewLayout {
         var sectionOffset:CGFloat = 0
         for sectionIndex in 0..<collectionView!.numberOfSections {
             var maxPosX:CGFloat = 0
+			let section = StickyHelper.currentBoard.stickySections.first(where: { $0.index == sectionIndex })!
+			if section == nil { print("Uh oh, section is nil!") }
             for itemIndex in 0..<collectionView!.numberOfItems(inSection: sectionIndex) {
                 let indexPath = IndexPath(item: itemIndex, section: sectionIndex)
-                let gridPosX = Int(floor(CGFloat(itemIndex * 2) / gridRows) * 2)
-                let gridPosY = (itemIndex * 2) % Int(gridRows)
-                
+//                let gridPosX = Int(floor(CGFloat(itemIndex * 2) / gridRows) * 2)
+//                let gridPosY = (itemIndex * 2) % Int(gridRows)
+				if section.stickyNotes == nil { print("Uh oh, sticky notes is nil! \(indexPath)") }
+				guard let stickyNote = section.stickyNotes.first(where: { $0.index == itemIndex }) else {
+					print("Sticky note is nil! \(indexPath) section: \(section.stickyNotes)")
+					continue
+				}
+				let gridPosX = Int(stickyNote.localX)
+				let gridPosY = Int(stickyNote.localY)
+				
                 let attributes = StickyWallLayoutAttributes(forCellWith: indexPath)
                 attributes.position = StickyGridPosition(x: gridPosX, y: gridPosY)
                 attributes.size = CGSize(width: stickySize, height: stickySize)

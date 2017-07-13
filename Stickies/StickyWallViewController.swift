@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 private let reuseIdentifier = "stickyCell"
 
 class StickyWallViewController: UICollectionViewController {
-
+	var fetchedController:NSFetchedResultsController<StickySection>!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,19 +25,24 @@ class StickyWallViewController: UICollectionViewController {
 
         // Do any additional setup after loading the view.
         collectionView!.setCollectionViewLayout(StickyWallLayout(), animated: false)
+		
+		let request:NSFetchRequest<StickySection> = StickySection.fetchRequest()
+		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		request.predicate = NSPredicate(format: "board == %@", StickyHelper.currentBoard)
+		fetchedController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: StickyHelper.managedContext, sectionNameKeyPath: nil, cacheName: nil)
+		fetchedController.delegate = self
+		try! fetchedController.performFetch()
     }
     
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 2
+        return fetchedController.fetchedObjects?.count ?? 0
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return section == 0 ? 5 : 3
+		return fetchedController.fetchedObjects?.first(where: {$0.index == section})?.stickies?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -77,4 +84,23 @@ class StickyWallViewController: UICollectionViewController {
     }
     */
 
+}
+
+extension StickyWallViewController: NSFetchedResultsControllerDelegate {
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		print("Did change content - fetched request controller!")
+		collectionView?.reloadData()
+	}
+	
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		print("Will change content - fetched request controller!")
+	}
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+		print("Did change at \(indexPath) -> \(newIndexPath), change type: \(type)")
+	}
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+		print("Did change section: \(sectionInfo), index: \(sectionIndex), type: \(type)")
+	}
 }
