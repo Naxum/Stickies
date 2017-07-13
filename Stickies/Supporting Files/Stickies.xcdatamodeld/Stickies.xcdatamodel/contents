@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13196.5" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="StickyBoard" representedClassName="StickyBoard" syncable="YES" codeGenerationType="class">
+        <attribute name="title" attributeType="String" defaultValueString="New Board" syncable="YES"/>
+        <relationship name="sections" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="StickySection" syncable="YES"/>
+    </entity>
+    <entity name="StickyNote" representedClassName="StickyNote" syncable="YES" codeGenerationType="class">
+        <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="localX" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="localY" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StickySection" syncable="YES"/>
+    </entity>
+    <entity name="StickySection" representedClassName="StickySection" syncable="YES" codeGenerationType="class">
+        <attribute name="columns" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="stickies" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="StickyNote" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="StickyNote" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="StickySection" positionX="-54" positionY="-9" width="128" height="90"/>
+        <element name="StickyBoard" positionX="-36" positionY="36" width="128" height="75"/>
+    </elements>
 </model>
