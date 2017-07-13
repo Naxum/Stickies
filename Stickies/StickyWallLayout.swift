@@ -15,7 +15,7 @@ class StickyWallLayout: UICollectionViewLayout {
     override class var layoutAttributesClass:AnyClass { return StickyWallLayoutAttributes.self }
     
     let gridPadding:CGFloat = 8.0
-    let sectionPadding:CGFloat = 32.0
+    let sectionPadding:CGFloat = 64.0
     
     var stickySize:CGFloat {
         return (collectionView!.bounds.height / stickyRows) - ((stickyRows - 2) * gridPadding)
@@ -55,7 +55,7 @@ class StickyWallLayout: UICollectionViewLayout {
                 attributes.size = CGSize(width: stickySize, height: stickySize)
                 let posX = CGFloat(gridPosX) * 0.5 * stickySize + sectionOffset
                 let posY = CGFloat(gridPosY) * 0.5 * stickySize
-                let padding = CGPoint(x: gridPosX, y: gridPosY) * gridPadding
+                let padding = CGPoint(x: gridPosX + 1, y: gridPosY + 1) * gridPadding
                 attributes.center = CGPoint(x: posX, y: posY) + CGPoint(xy: stickySize * 0.5) + padding
                 if attributes.center.x > maxPosX {
                     maxPosX = attributes.center.x
