@@ -17,6 +17,8 @@
 		9B800D651F14782C0002E65E /* StickyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D631F14782C0002E65E /* StickyCell.swift */; };
 		9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */; };
 		9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */; };
+		9BF157391F1A9C1E00058641 /* StickySectionBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF157381F1A9C1E00058641 /* StickySectionBackgroundView.swift */; };
+		9BF1573E1F1AABFD00058641 /* StickyGridSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF1573D1F1AABFD00058641 /* StickyGridSettings.swift */; };
 		9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFB48FD1F17246600ABF564 /* StickyHelper.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,8 @@
 		9B800D631F14782C0002E65E /* StickyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyCell.swift; sourceTree = "<group>"; };
 		9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBoardViewController.swift; sourceTree = "<group>"; };
 		9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallLayout.swift; sourceTree = "<group>"; };
+		9BF157381F1A9C1E00058641 /* StickySectionBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickySectionBackgroundView.swift; sourceTree = "<group>"; };
+		9BF1573D1F1AABFD00058641 /* StickyGridSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyGridSettings.swift; sourceTree = "<group>"; };
 		9BFB48FD1F17246600ABF564 /* StickyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,16 +70,11 @@
 		9B800D481F1476A90002E65E /* Stickies */ = {
 			isa = PBXGroup;
 			children = (
-				9B800D581F1476A90002E65E /* Info.plist */,
-				9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */,
-				9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */,
+				9BF1573C1F1AAB8D00058641 /* Helpers */,
+				9BF1573B1F1AAB7700058641 /* Sticky Board View */,
+				9BF1573A1F1AAB1000058641 /* Sticky Wall Collection View */,
 				9B800D601F1477530002E65E /* Supporting Files */,
-				9B800D611F1477F10002E65E /* StickyWallViewController.swift */,
-				9BFB48FD1F17246600ABF564 /* StickyHelper.swift */,
-				9B800D631F14782C0002E65E /* StickyCell.swift */,
-				9B800D491F1476A90002E65E /* AppDelegate.swift */,
-				9B800D4D1F1476A90002E65E /* Main.storyboard */,
-				9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */,
+				9B800D581F1476A90002E65E /* Info.plist */,
 			);
 			path = Stickies;
 			sourceTree = "<group>";
@@ -83,11 +82,42 @@
 		9B800D601F1477530002E65E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9B800D491F1476A90002E65E /* AppDelegate.swift */,
+				9B800D4D1F1476A90002E65E /* Main.storyboard */,
 				9B800D551F1476A90002E65E /* LaunchScreen.storyboard */,
 				9B800D501F1476A90002E65E /* Stickies.xcdatamodeld */,
 				9B800D531F1476A90002E65E /* Assets.xcassets */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9BF1573A1F1AAB1000058641 /* Sticky Wall Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */,
+				9B800D611F1477F10002E65E /* StickyWallViewController.swift */,
+				9BF157381F1A9C1E00058641 /* StickySectionBackgroundView.swift */,
+				9B800D631F14782C0002E65E /* StickyCell.swift */,
+				9BF1573D1F1AABFD00058641 /* StickyGridSettings.swift */,
+			);
+			path = "Sticky Wall Collection View";
+			sourceTree = "<group>";
+		};
+		9BF1573B1F1AAB7700058641 /* Sticky Board View */ = {
+			isa = PBXGroup;
+			children = (
+				9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */,
+			);
+			path = "Sticky Board View";
+			sourceTree = "<group>";
+		};
+		9BF1573C1F1AAB8D00058641 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */,
+				9BFB48FD1F17246600ABF564 /* StickyHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,7 +192,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */,
+				9BF1573E1F1AABFD00058641 /* StickyGridSettings.swift in Sources */,
 				9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */,
+				9BF157391F1A9C1E00058641 /* StickySectionBackgroundView.swift in Sources */,
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
 				9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */,

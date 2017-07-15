@@ -16,8 +16,6 @@ class StickyCell: UICollectionViewCell {
         }
     }
     
-    var position = StickyGridPosition(x: 0, y: 0)
-    
     var thumbnail:UIImage? {
         didSet {
             thumbnailView?.image = thumbnail
@@ -35,22 +33,4 @@ class StickyCell: UICollectionViewCell {
         
     }
 
-}
-
-struct StickyGridPosition {
-    var x:Int
-    var y:Int
-}
-
-struct StickyGridBounds {
-    var maxPosition = StickyGridPosition(x: 0, y: 0)
-    
-    mutating func encapsulate(position pos:StickyGridPosition) {
-        if pos.x > maxPosition.x {
-            maxPosition.x = pos.x
-        }
-        if pos.y > maxPosition.y {
-            maxPosition.y = pos.y
-        }
-    }
 }

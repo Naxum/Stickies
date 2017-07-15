@@ -13,6 +13,7 @@ private let reuseIdentifier = "stickyCell"
 
 class StickyWallViewController: UICollectionViewController {
 	var fetchedController:NSFetchedResultsController<StickySection>!
+	var layout:StickyWallLayout!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,9 +23,13 @@ class StickyWallViewController: UICollectionViewController {
 
         // Register cell classes
 //        self.collectionView!.register(StickyCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+		self.collectionView!.register(StickySectionBackgroundView.self, forSupplementaryViewOfKind: StickySectionBackgroundView.identifier, withReuseIdentifier: StickySectionBackgroundView.identifier)
 
+		self.collectionView!.backgroundColor = UIColor.red
+		
         // Do any additional setup after loading the view.
-        collectionView!.setCollectionViewLayout(StickyWallLayout(), animated: false)
+		layout = StickyWallLayout()
+        collectionView!.setCollectionViewLayout(layout, animated: false)
 		
 		let request:NSFetchRequest<StickySection> = StickySection.fetchRequest()
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
@@ -52,6 +57,17 @@ class StickyWallViewController: UICollectionViewController {
     
         return cell
     }
+	
+	override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+		if kind != StickySectionBackgroundView.identifier {
+			print("Unknown kind!")
+		}
+		
+		print("Creating supplementary view at \(indexPath)")
+		
+		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: StickySectionBackgroundView.identifier, for: indexPath) as! StickySectionBackgroundView
+		return view
+	}
 
     // MARK: UICollectionViewDelegate
 

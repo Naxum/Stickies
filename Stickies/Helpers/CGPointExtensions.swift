@@ -14,6 +14,16 @@ extension CGPoint {
         x = xy
         y = xy
     }
+	
+	init (x: CGFloat) {
+		self.x = x
+		y = 0
+	}
+	
+	init (y: CGFloat) {
+		x = 0
+		self.y = y
+	}
     
     static func + (left: CGPoint, right: CGPoint) -> CGPoint {
         return CGPoint(x: left.x + right.x, y: left.y + right.y)
@@ -22,4 +32,15 @@ extension CGPoint {
     static func * (left: CGPoint, right: CGFloat) -> CGPoint {
         return CGPoint(x: left.x * right, y: left.y * right)
     }
+	
+	static func / (left: CGPoint, right: CGFloat) -> CGPoint {
+		return CGPoint(x: left.x / right, y: left.y / right)
+	}
+}
+
+extension CGSize {
+	init (ratio:CGFloat) {
+		width = ratio
+		height = ratio
+	}
 }
