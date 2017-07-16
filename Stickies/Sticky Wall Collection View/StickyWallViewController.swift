@@ -12,7 +12,6 @@ import CoreData
 private let reuseIdentifier = "stickyCell"
 
 class StickyWallViewController: UICollectionViewController {
-	@IBOutlet var longPressRecognizer: UILongPressGestureRecognizer!
 	
 	var fetchedController:NSFetchedResultsController<StickySection>!
 	var layout:StickyWallLayout!
@@ -35,22 +34,19 @@ class StickyWallViewController: UICollectionViewController {
 		
 		let request:NSFetchRequest<StickySection> = StickySection.fetchRequest()
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		request.predicate = NSPredicate(format: "(board == %@) && (isTrashSection != YES)", StickyHelper.currentBoard)
+		request.predicate = NSPredicate(format: "board = %@ AND isTrashSection != YES", StickyHelper.currentBoard)
 		fetchedController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: StickyHelper.managedContext, sectionNameKeyPath: nil, cacheName: nil)
 		fetchedController.delegate = self
 		try! fetchedController.performFetch()
+		
+		print("Found non-trash sections: \(fetchedController.fetchedObjects?.count ?? 0)")
     }
 	
-	@IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
-		print("Long press!")
-	}
-	
-	@IBAction func cellRemoveButtonPressed(_ sender: UIButton) {
-		let cell = sender.superview!.superview! as! StickyCell
-		let indexPath = collectionView!.indexPath(for: cell)!
-		StickyHelper.removeStickyNote(at: indexPath)
-		collectionView!.reloadData()
-	}
+//	func removeSticky() {
+//		let cell = sender.superview!.superview! as! StickyCell
+//		let indexPath = collectionView!.indexPath(for: cell)!
+//		StickyHelper.removeStickyNote(at: indexPath)
+//	}
 	
 	// MARK: UICollectionViewDataSource
 
@@ -130,3 +126,4 @@ extension StickyWallViewController: NSFetchedResultsControllerDelegate {
 		print("Did change section: \(sectionInfo), index: \(sectionIndex), type: \(type)")
 	}
 }
+

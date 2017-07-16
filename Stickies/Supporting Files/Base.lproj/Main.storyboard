@@ -94,26 +94,6 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uax-Yw-YxA">
-                                            <rect key="frame" x="-12" y="-12" width="24" height="24"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="24" id="4Qq-tC-pkP"/>
-                                                <constraint firstAttribute="width" constant="24" id="Qqn-bA-tdk"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
-                                            <state key="normal" title="x">
-                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            </state>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                    <real key="value" value="12"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <action selector="cellRemoveButtonPressed:" destination="vJq-mW-tCg" eventType="touchUpInside" id="5r3-vV-G1Q"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                 </view>
                                 <color key="backgroundColor" red="1" green="0.2952831722428958" blue="0.83881354882222192" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -124,8 +104,6 @@
                                     <constraint firstAttribute="trailing" secondItem="7P4-dK-T0i" secondAttribute="trailing" id="JZu-eN-glP"/>
                                     <constraint firstItem="7P4-dK-T0i" firstAttribute="top" secondItem="cBi-fc-BYb" secondAttribute="top" id="Jtt-o3-gh2"/>
                                     <constraint firstItem="uoT-MT-wG1" firstAttribute="top" secondItem="cBi-fc-BYb" secondAttribute="top" id="WGp-eI-ySW"/>
-                                    <constraint firstAttribute="leading" secondItem="uax-Yw-YxA" secondAttribute="trailing" constant="-12" id="n4u-mz-VdP"/>
-                                    <constraint firstItem="uax-Yw-YxA" firstAttribute="top" secondItem="cBi-fc-BYb" secondAttribute="top" constant="-12" id="r2M-HS-U1b"/>
                                     <constraint firstItem="uoT-MT-wG1" firstAttribute="leading" secondItem="cBi-fc-BYb" secondAttribute="leading" id="sPL-9K-ZtR"/>
                                     <constraint firstAttribute="bottom" secondItem="uoT-MT-wG1" secondAttribute="bottom" id="xJg-ad-icP"/>
                                 </constraints>
@@ -138,19 +116,10 @@
                         <connections>
                             <outlet property="dataSource" destination="vJq-mW-tCg" id="Uv5-yO-sLl"/>
                             <outlet property="delegate" destination="vJq-mW-tCg" id="ZYr-cc-lIP"/>
-                            <outletCollection property="gestureRecognizers" destination="cUt-b1-Lhd" appends="YES" id="xce-MX-ypW"/>
                         </connections>
                     </collectionView>
-                    <connections>
-                        <outlet property="longPressRecognizer" destination="cUt-b1-Lhd" id="Nct-Pf-y8y"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vK0-o7-nya" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1.5" id="cUt-b1-Lhd">
-                    <connections>
-                        <action selector="longPress:" destination="vJq-mW-tCg" id="8H7-2P-4qe"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-114.40000000000001" y="-92.203898050974516"/>
         </scene>
