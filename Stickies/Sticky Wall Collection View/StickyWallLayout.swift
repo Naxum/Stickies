@@ -39,8 +39,6 @@ class StickyWallLayout: UICollectionViewLayout {
 		
 		boardBounds = boardBounds.union(CGRect(x: boardBounds.maxX, y: boardBounds.maxY, width: boardPadding, height: 0))
 		
-		print("boardBoundsHeight - height: \(boardBounds.height - height)")
-		
         return boardBounds.size
     }
     
@@ -60,7 +58,7 @@ class StickyWallLayout: UICollectionViewLayout {
         for sectionIndex in 0..<collectionView!.numberOfSections {
 			
 			// section data (contains sticky notes, which contain their position data)
-			let section = StickyHelper.currentBoard.stickySections.first(where: { $0.index == sectionIndex })!
+			let section = StickyHelper.currentBoard.activeSections.first(where: { $0.index == sectionIndex })!
 			
 			// section offset based on how many sections have existed so far
 			let sectionOffset = StickyGridSettings.sectionOffsetSpacing * CGFloat(sectionIndex) + boardBounds.width
@@ -70,8 +68,8 @@ class StickyWallLayout: UICollectionViewLayout {
 			// loop through each itemIndex and corresponding sticky note
             for itemIndex in 0..<collectionView!.numberOfItems(inSection: sectionIndex) {
                 let indexPath = IndexPath(item: itemIndex, section: sectionIndex)
-				guard let stickyNote = section.stickyNotes.first(where: { $0.index == itemIndex }) else {
-					print("Sticky note is nil! \(indexPath) section: \(section.stickyNotes)")
+				guard let stickyNote = section.activeStickies.first(where: { $0.index == itemIndex }) else {
+					print("Sticky note is nil! \(indexPath) section: \(section.activeStickies)")
 					continue
 				}
 				
@@ -102,7 +100,6 @@ class StickyWallLayout: UICollectionViewLayout {
 			
 			// create section background attributes (just need size and center)
 			let sectionIndexPath = IndexPath(index: sectionIndex)
-			print("Section index path: \(sectionIndexPath)")
 			let sectionAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: StickySectionBackgroundView.identifier, with: sectionIndexPath)
 			
 			// cover the entire width and height of the section, position in the center

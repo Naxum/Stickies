@@ -12,6 +12,8 @@ import CoreData
 private let reuseIdentifier = "stickyCell"
 
 class StickyWallViewController: UICollectionViewController {
+	@IBOutlet var longPressRecognizer: UILongPressGestureRecognizer!
+	
 	var fetchedController:NSFetchedResultsController<StickySection>!
 	var layout:StickyWallLayout!
 	
@@ -33,13 +35,24 @@ class StickyWallViewController: UICollectionViewController {
 		
 		let request:NSFetchRequest<StickySection> = StickySection.fetchRequest()
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		request.predicate = NSPredicate(format: "board == %@", StickyHelper.currentBoard)
+		request.predicate = NSPredicate(format: "(board == %@) && (isTrashSection != YES)", StickyHelper.currentBoard)
 		fetchedController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: StickyHelper.managedContext, sectionNameKeyPath: nil, cacheName: nil)
 		fetchedController.delegate = self
 		try! fetchedController.performFetch()
     }
-    
-    // MARK: UICollectionViewDataSource
+	
+	@IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
+		print("Long press!")
+	}
+	
+	@IBAction func cellRemoveButtonPressed(_ sender: UIButton) {
+		let cell = sender.superview!.superview! as! StickyCell
+		let indexPath = collectionView!.indexPath(for: cell)!
+		StickyHelper.removeStickyNote(at: indexPath)
+		collectionView!.reloadData()
+	}
+	
+	// MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return fetchedController.fetchedObjects?.count ?? 0
@@ -47,14 +60,14 @@ class StickyWallViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return fetchedController.fetchedObjects?.first(where: {$0.index == section})?.stickies?.count ?? 0
+		return fetchedController.fetchedObjects?.first(where: {$0.index == section})?.activeStickies.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! StickyCell
-    
-        // Configure the cell
-    
+		cell.label.text = "\(indexPath.item)"
+		//TODO: give cell its thumbnail
+		
         return cell
     }
 	
@@ -62,9 +75,6 @@ class StickyWallViewController: UICollectionViewController {
 		if kind != StickySectionBackgroundView.identifier {
 			print("Unknown kind!")
 		}
-		
-		print("Creating supplementary view at \(indexPath)")
-		
 		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: StickySectionBackgroundView.identifier, for: indexPath) as! StickySectionBackgroundView
 		return view
 	}

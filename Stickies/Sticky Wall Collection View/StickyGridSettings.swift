@@ -18,11 +18,11 @@ class StickyGridSettings {
 	static let gridRows:CGFloat = 8
 	
 	/// padding applied to all grid positions
-	static let boardPadding:CGFloat = 8
-	static let sectionPadding:CGFloat = 16
+	static let boardPadding:CGFloat = 16
+	static let sectionPadding:CGFloat = 24
 	
 	/// interal spacing between grid cells inside a section
-	static let gridSpacing:CGFloat = 8
+	static let gridSpacing:CGFloat = 24
 	
 	/// spacing between sections
 	static let sectionOffsetSpacing:CGFloat = 32
@@ -36,7 +36,6 @@ class StickyGridSettings {
 	
 	/// returns internal offset for a grid position, without external offsets (previous sections' widths and offsets)
 	static func getStickyOffsetInSection(for position:StickyGridPosition, with stickySize:CGFloat) -> CGPoint {
-//		let padding = CGPoint(xy: boardPadding + sectionPadding)
 		let padding = CGPoint(xy: sectionPadding)
 		let inbetweenSpacing = (position.cgPoint / gridCellsPerStickySize) * gridSpacing
 		let stickySpacing = (position.cgPoint / gridCellsPerStickySize) * stickySize

@@ -9,13 +9,14 @@
 import UIKit
 
 class StickyCell: UICollectionViewCell {
-    
+	@IBOutlet weak var label: UILabel!
+	
     @IBOutlet fileprivate weak var thumbnailView: UIImageView! {
         didSet {
             thumbnailView.image = thumbnail
         }
     }
-    
+	
     var thumbnail:UIImage? {
         didSet {
             thumbnailView?.image = thumbnail
@@ -23,14 +24,13 @@ class StickyCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        thumbnail = nil
+		thumbnail = nil
     }
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
-        
+		
         //let attributes = layoutAttributes as! StickyWallLayoutAttributes
         
     }
-
 }

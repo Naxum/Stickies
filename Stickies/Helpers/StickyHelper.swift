@@ -39,16 +39,27 @@ class StickyHelper: NSObject {
 	static func addStickyNote() -> StickyNote {
 		print("------")
 		print("Adding sticky note...")
-		let existingSection = currentBoard.stickySections.max { $0.index < $1.index }
+		let existingSection = currentBoard.activeSections.max { $0.index < $1.index }
 		let section = existingSection ?? StickySection(context: managedContext)
 		
-		let previousSticky = section.stickyNotes.max { $0.index < $1.index }
-		print("Previous sticky: \(previousSticky?.index ?? -1) out of \(section.stickyNotes.count) stickies")
+		let gridCellsPerStickySize = Int(StickyGridSettings.gridCellsPerStickySize)
+		
+		let previousIndex = section.activeStickies.flatMap({ $0.index }).max()
+		let furthestColumn = section.activeStickies.flatMap({$0.localX}).max()
+		let previousSticky = section.activeStickies.filter({$0.localX == furthestColumn}).max { $0.localY < $1.localY }
+		let previousPosition = StickyGridPosition(x: Int(previousSticky?.localX ?? 0), y: Int(previousSticky?.localY ?? Int64(-gridCellsPerStickySize)))
+		
+		let nextPosition:StickyGridPosition
+		if previousPosition.gridPosY == Int(StickyGridSettings.gridRows) - gridCellsPerStickySize {
+			nextPosition = StickyGridPosition(x: previousPosition.gridPosX + gridCellsPerStickySize, y: 0)
+		} else {
+			nextPosition = StickyGridPosition(x: previousPosition.gridPosX, y: previousPosition.gridPosY + gridCellsPerStickySize)
+		}
 		
 		let stickyNote = StickyNote(context: managedContext)
-		stickyNote.index = (previousSticky?.index ?? -1) + 1
-		stickyNote.localX = Int64(floor(Double(stickyNote.index) / 4)) * 2
-		stickyNote.localY = (stickyNote.index % 4) * 2
+		stickyNote.index = (previousIndex ?? -1) + 1
+		stickyNote.localX = Int64(nextPosition.gridPosX)
+		stickyNote.localY = Int64(nextPosition.gridPosY)
 		
 		section.addToStickies(stickyNote)
 		
@@ -61,12 +72,42 @@ class StickyHelper: NSObject {
 		try! managedContext.save()
 		return stickyNote
 	}
+	
+	static func removeStickyNote(at indexPath:IndexPath) {
+		guard let section = currentBoard.activeSections.first(where: {$0.index == indexPath.section}) else {
+			print("Could not find section at index path \(indexPath)")
+			return
+		}
+		guard let stickyNote = section.activeStickies.first(where: {$0.index == indexPath.item}) else {
+			print("Could not find sticky note to remove at index path \(indexPath)")
+			return
+		}
+		
+		print("Removing sticky note: \(stickyNote)")
+		stickyNote.removed = true
+		stickyNote.removedDate = Date()
+		
+		section.activeStickies.filter({$0.index >= stickyNote.index }).forEach { $0.index -= 1 }
+		
+		if currentBoard.trashSection == nil {
+			currentBoard.trashSection = StickySection(context: managedContext)
+			currentBoard.trashSection!.isTrashSection = true
+			currentBoard.trashSection!.board = currentBoard
+		}
+		
+		currentBoard.trashSection!.allStickies.forEach { $0.index += 1 }
+		currentBoard.trashSection!.addToStickies(stickyNote)
+		stickyNote.index = 0
+		
+		try! managedContext.save()
+	}
 }
 
 extension StickyBoard {
-	var stickySections:Set<StickySection> { return sections as! Set<StickySection> }
+	var activeSections:Set<StickySection> { return (sections as! Set<StickySection>).filter { !$0.isTrashSection } }
 }
 
 extension StickySection {
-	var stickyNotes:Set<StickyNote> { return stickies as! Set<StickyNote> }
+	var activeStickies:Set<StickyNote> { return (stickies as! Set<StickyNote>).filter { !$0.removed } }
+	var allStickies:Set<StickyNote> { return stickies as! Set<StickyNote> }
 }

@@ -27,5 +27,6 @@ class StickySectionBackgroundView: UICollectionReusableView {
 		backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 0.9, alpha: 1)
 		layer.cornerRadius = 8
 		layer.zPosition = -1
+		isUserInteractionEnabled = false
 	}
 }
