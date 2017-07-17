@@ -17,6 +17,8 @@ class StickyCell: UICollectionViewCell {
         }
     }
 	
+	fileprivate var moveIntentAnimation:UIViewPropertyAnimator?
+	
     var thumbnail:UIImage? {
         didSet {
             thumbnailView?.image = thumbnail
@@ -25,12 +27,30 @@ class StickyCell: UICollectionViewCell {
     
     override func prepareForReuse() {
 		thumbnail = nil
+		moveIntentAnimation?.stopAnimation(true)
+		moveIntentAnimation = nil
+		contentView.transform = CGAffineTransform.identity
     }
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
 		
+		contentView.cornerRadius = cornerRadius
+		contentView.clipsToBounds = true
         //let attributes = layoutAttributes as! StickyWallLayoutAttributes
         
     }
+	
+	func displayMoveRightIntent(display:Bool) {
+		if moveIntentAnimation == nil && display {
+			contentView.transform = CGAffineTransform.identity
+			moveIntentAnimation = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) { [unowned self] in
+				self.contentView.transform = CGAffineTransform(translationX: self.bounds.width * 0.5, y: 0)
+			}
+			moveIntentAnimation!.pausesOnCompletion = true
+		}
+		
+		moveIntentAnimation?.isReversed = !display
+		moveIntentAnimation?.startAnimation()
+	}
 }

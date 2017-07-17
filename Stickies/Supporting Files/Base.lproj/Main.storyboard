@@ -84,7 +84,7 @@
                                             <color key="backgroundColor" red="1" green="0.96340591346256732" blue="0.19967913978979579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                    <real key="value" value="8"/>
+                                                    <real key="value" value="0.0"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
@@ -107,6 +107,11 @@
                                     <constraint firstItem="uoT-MT-wG1" firstAttribute="leading" secondItem="cBi-fc-BYb" secondAttribute="leading" id="sPL-9K-ZtR"/>
                                     <constraint firstAttribute="bottom" secondItem="uoT-MT-wG1" secondAttribute="bottom" id="xJg-ad-icP"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="label" destination="uoT-MT-wG1" id="ElI-gv-nwd"/>
                                     <outlet property="thumbnailView" destination="7P4-dK-T0i" id="h7a-JE-ghN"/>

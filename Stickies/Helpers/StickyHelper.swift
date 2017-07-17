@@ -73,12 +73,25 @@ class StickyHelper: NSObject {
 		return stickyNote
 	}
 	
+	static func getSection(at index:Int) -> StickySection? {
+		return currentBoard.activeSections.first(where: {$0.index == index})
+	}
+	
+	static func getSection(at indexPath:IndexPath) -> StickySection? {
+		return currentBoard.activeSections.first(where: {$0.index == indexPath.section})
+	}
+	
+	static func getSticky(at indexPath:IndexPath) -> StickyNote? {
+		guard let section = getSection(at: indexPath) else { return nil }
+		return section.activeStickies.first(where: {$0.index == indexPath.item})
+	}
+	
 	static func removeStickyNote(at indexPath:IndexPath) {
-		guard let section = currentBoard.activeSections.first(where: {$0.index == indexPath.section}) else {
+		guard let section = getSection(at: indexPath) else {
 			print("Could not find section at index path \(indexPath)")
 			return
 		}
-		guard let stickyNote = section.activeStickies.first(where: {$0.index == indexPath.item}) else {
+		guard let stickyNote = getSticky(at: indexPath) else {
 			print("Could not find sticky note to remove at index path \(indexPath)")
 			return
 		}
@@ -101,13 +114,45 @@ class StickyHelper: NSObject {
 		
 		try! managedContext.save()
 	}
-}
-
-extension StickyBoard {
-	var activeSections:Set<StickySection> { return (sections as! Set<StickySection>).filter { !$0.isTrashSection } }
-}
-
-extension StickySection {
-	var activeStickies:Set<StickyNote> { return (stickies as! Set<StickyNote>).filter { !$0.removed } }
-	var allStickies:Set<StickyNote> { return stickies as! Set<StickyNote> }
+	
+	static func move(stickyNote:StickyNote, to indexPath: IndexPath) {
+		guard let toSection = getSection(at: indexPath) else {
+			print("Could not find section to move sticky note to! Index path: \(indexPath)")
+			return
+		}
+		
+		if stickyNote.section != toSection {
+			// TODO: handle moving across sections
+			print("We can't handle that yet!")
+			return
+		} else {
+			// move to a new position in same section
+			if let existingStickyNote = getSticky(at: indexPath) {
+				// a sticky already exists here, we need to shift it and all ones on its right one sticky size to the right
+				print("Moving \(stickyNote) to \(indexPath), which means we're moving \(existingStickyNote)")
+				stickyNote.localX = existingStickyNote.localX
+				stickyNote.localY = existingStickyNote.localY
+				getStickies(pushedBy: existingStickyNote).forEach { $0.localX += Int64(StickyGridSettings.gridCellsPerStickySize) }
+				existingStickyNote.localX += Int64(StickyGridSettings.gridCellsPerStickySize)
+//				toSection.refreshStickyIndexes()
+			} else {
+				print("Attempted to move to \(indexPath), but there's no sticky there?")
+			}
+		}
+		try! managedContext.save()
+	}
+	
+	static func getStickies(pushedBy stickyNote:StickyNote) -> [StickyNote] {
+		var result = [StickyNote]()
+		let allStickiesToRight = stickyNote.section!.activeStickies.filter {
+			$0.localX > stickyNote.localX && $0.localY >= stickyNote.localY - 1 && $0.localY <= stickyNote.localY + 1
+			}
+		var currentX = stickyNote.localX + Int64(StickyGridSettings.gridCellsPerStickySize)
+		for sticky in allStickiesToRight.sorted(by: { $0.localX < $1.localX }) {
+			guard sticky.localX == currentX else { continue }
+			result.append(sticky)
+			currentX += Int64(StickyGridSettings.gridCellsPerStickySize)
+		}
+		return result
+	}
 }

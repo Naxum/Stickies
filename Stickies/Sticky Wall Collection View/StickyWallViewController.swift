@@ -15,6 +15,8 @@ class StickyWallViewController: UICollectionViewController {
 	
 	var fetchedController:NSFetchedResultsController<StickySection>!
 	var layout:StickyWallLayout!
+	var previousHoverCells = [StickyCell]()
+	var previousHoverIndexPath:IndexPath?
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +28,9 @@ class StickyWallViewController: UICollectionViewController {
 //        self.collectionView!.register(StickyCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 		self.collectionView!.register(StickySectionBackgroundView.self, forSupplementaryViewOfKind: StickySectionBackgroundView.identifier, withReuseIdentifier: StickySectionBackgroundView.identifier)
 
-		self.collectionView!.backgroundColor = UIColor.red
+		self.collectionView!.dragDelegate = self
+		self.collectionView!.dropDelegate = self
+//		self.collectionView!.reorderingCadence = .fast
 		
         // Do any additional setup after loading the view.
 		layout = StickyWallLayout()
@@ -127,3 +131,127 @@ extension StickyWallViewController: NSFetchedResultsControllerDelegate {
 	}
 }
 
+extension StickyWallViewController: UICollectionViewDragDelegate {
+	func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+		// add items to an existing drag
+		
+		let provider = NSItemProvider(object: StickyNoteProvider(indexPath: indexPath))
+		let dragItem = UIDragItem(itemProvider: provider)
+		dragItem.localObject = StickyHelper.getSticky(at: indexPath)
+		print("adding items to drag...")
+		return [dragItem]
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+		// handle start of drag
+		let provider = NSItemProvider(object: StickyNoteProvider(indexPath: indexPath))
+		let dragItem = UIDragItem(itemProvider: provider)
+		dragItem.localObject = StickyHelper.getSticky(at: indexPath)
+		print("items for beginning drag..")
+		return [dragItem]
+	}
+}
+
+extension StickyWallViewController: UICollectionViewDropDelegate {
+//	func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+//		<#code#>
+//	}
+	
+	func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+		
+		// if we have a destination index path (ie, drag is hovering over existing sticky notes)
+		if let destinationIndexPath = destinationIndexPath, let hoveringCell = collectionView.cellForItem(at: destinationIndexPath) as? StickyCell {
+			
+			// if the drag is not over an original sticky note
+			if !session.items.contains(where: { ($0.localObject as! StickyNote).indexPath == destinationIndexPath }) {
+				
+				let hoveringSticky = StickyHelper.getSticky(at: destinationIndexPath)!
+				
+				// if the drag is not in the same index path position as last update
+				if destinationIndexPath != previousHoverIndexPath {
+					previousHoverCells.forEach { $0.displayMoveRightIntent(display: false) }
+					previousHoverCells.removeAll()
+					
+					previousHoverCells.append(hoveringCell)
+					previousHoverCells.append(contentsOf: StickyHelper.getStickies(pushedBy: hoveringSticky).map({collectionView.cellForItem(at: $0.indexPath) as! StickyCell}))
+					previousHoverCells.forEach { $0.displayMoveRightIntent(display: true) }
+					previousHoverIndexPath = destinationIndexPath
+				}
+			}
+		} else {
+			// not hovering over any
+			previousHoverCells.forEach { $0.displayMoveRightIntent(display: false) }
+		}
+		
+		return UICollectionViewDropProposal(operation: .move, intent: .unspecified)
+	}
+	
+//	func collectionView(_ collectionView: UICollectionView, dragSessionAllowsMoveOperation session: UIDragSession) -> Bool {
+//		<#code#>
+//	}
+	
+	func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+		// undo any visual indicators that sticky notes were going to be pushed
+		previousHoverCells.forEach { $0.displayMoveRightIntent(display: false) }
+		previousHoverCells.removeAll()
+		previousHoverIndexPath = nil
+		
+		guard let destinationIndexPath = coordinator.destinationIndexPath else {
+			print("Don't support ambiguous drags to any location yet!")
+			return
+		}
+		
+		guard coordinator.items.count == 1 else {
+			print("Don't support multiple stickies in a drag yet!")
+			return
+		}
+		
+		let stickyToMove = coordinator.session.items.first!.localObject as! StickyNote
+		guard stickyToMove.indexPath != destinationIndexPath else {
+			print("Moving one sticky to its same position... cancelling the drop")
+			return
+		}
+		
+		// right now moving one sticky to push an existing sticky rightward is the only supported drop type
+		// this is very WIP
+		
+		let section = stickyToMove.section!
+		let existingCell = collectionView.cellForItem(at: destinationIndexPath)!
+		let cellToMove = collectionView.cellForItem(at: stickyToMove.indexPath)!
+		cellToMove.contentView.alpha = 0 // hide the original cell while we drop the preview into the correct spot
+		
+		// wrapping everything in an animator gives a lot more control
+		let dropAnimator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {
+			
+			// drop the cell preview where the existing cell is
+			coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: existingCell.center))
+			
+			// have the collection view smoothly animate all the cells' new positions
+			collectionView.performBatchUpdates({
+				// this pushes stickies to the right
+				StickyHelper.move(stickyNote: stickyToMove, to: destinationIndexPath)
+			})
+		}
+		
+		// when the drop and other animations are complete...
+		dropAnimator.addCompletion { _ in
+			
+			// make the real cell visible again
+			cellToMove.contentView.alpha = 1
+			
+			// update all cells' indexes so they're correctly ordered (not sure if super necessary)
+			section.refreshStickyIndexes()
+			
+			// section.refreshStickyIndexes doesn't actually save these new values (maybe move to StickyHelper?)
+			try! StickyHelper.managedContext.save()
+			
+			// since there's no more or fewer stickies, we need to manually reload the data
+			collectionView.reloadData()
+		}
+		
+		// don't forget to start the animator!
+		dropAnimator.startAnimation()
+	}
+	
+	
+}
