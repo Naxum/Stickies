@@ -33,31 +33,32 @@ class StickyGridSettings {
 		let maxSpacingY = gridSpacing * (gridRows / gridCellsPerStickySize)
 		return (height - padding - maxSpacingY) / (gridRows / gridCellsPerStickySize)
 	}
-	
-	/// returns internal offset for a grid position, without external offsets (previous sections' widths and offsets)
-	static func getStickyOffsetInSection(for position:StickyGridPosition, with stickySize:CGFloat) -> CGPoint {
-		let padding = CGPoint(xy: sectionPadding)
-		let inbetweenSpacing = (position.cgPoint / gridCellsPerStickySize) * gridSpacing
-		let stickySpacing = (position.cgPoint / gridCellsPerStickySize) * stickySize
-		return padding + inbetweenSpacing + stickySpacing
-	}
 }
 
 struct StickyGridPosition {
 	let gridPosX:Int
 	let gridPosY:Int
+	let sectionIndex:Int
 	
-	init(x:Int, y:Int) {
+	init(x:Int, y:Int, section:Int) {
 		gridPosX = x
 		gridPosY = y
+		sectionIndex = section
 	}
 	
 	var cgPoint:CGPoint { return CGPoint(x: CGFloat(gridPosX), y: CGFloat(gridPosY ))}
 	
-	func getStickyPlacement(forStickySize stickySize:CGFloat) -> (origin:CGPoint, center:CGPoint, size:CGSize) {
-		let offset = StickyGridSettings.getStickyOffsetInSection(for: self, with: stickySize)
-		let center = offset + CGPoint(xy: stickySize / StickyGridSettings.gridCellsPerStickySize)
-		let size = CGSize(width: stickySize, height: stickySize)
-		return (offset, center, size)
+	func getFrame(withContentHeight height:CGFloat) -> CGRect {
+		let stickySize = StickyGridSettings.getStickySize(forContentHeight: height)
+		let sectionBounds = try! StickyHelper.currentBoard.getSectionFrame(sectionIndex: sectionIndex, withContentHeight: height)
+		let sectionOffset = CGPoint(x: sectionBounds.minX + StickyGridSettings.sectionPadding, y: sectionBounds.minY + StickyGridSettings.sectionPadding)
+		let inbetweenSpacing = (cgPoint / StickyGridSettings.gridCellsPerStickySize) * StickyGridSettings.gridSpacing
+		let stickySpacing = (cgPoint / StickyGridSettings.gridCellsPerStickySize) * stickySize
+		return CGRect(origin: sectionOffset + inbetweenSpacing + stickySpacing, size: CGSize(ratio: stickySize))
+		
+	}
+	
+	static func == (left:StickyGridPosition, right:StickyGridPosition) -> Bool {
+		return left.gridPosX == right.gridPosX && left.gridPosY == right.gridPosY
 	}
 }

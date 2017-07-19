@@ -16,9 +16,9 @@
         <relationship name="section" maxCount="1" deletionRule="Nullify" destinationEntity="StickySection" inverseName="stickies" inverseEntity="StickySection" syncable="YES"/>
     </entity>
     <entity name="StickySection" representedClassName="StickySection" syncable="YES" codeGenerationType="class">
-        <attribute name="columns" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isTrashSection" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxGridX" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="board" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StickyBoard" inverseName="sections" inverseEntity="StickyBoard" syncable="YES"/>
         <relationship name="stickies" toMany="YES" deletionRule="Nullify" destinationEntity="StickyNote" inverseName="section" inverseEntity="StickyNote" syncable="YES"/>
     </entity>

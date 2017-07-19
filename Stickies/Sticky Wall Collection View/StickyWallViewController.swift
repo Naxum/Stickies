@@ -15,8 +15,11 @@ class StickyWallViewController: UICollectionViewController {
 	
 	var fetchedController:NSFetchedResultsController<StickySection>!
 	var layout:StickyWallLayout!
-	var previousHoverCells = [StickyCell]()
-	var previousHoverIndexPath:IndexPath?
+//	var previousHoverCells = [StickyCell]()
+//	var previousHoverIndexPath:IndexPath?
+	var currentDragResults = [Int: StickyDragResult]()
+	var currentDragPlaceholders = [Int: [UIView]]()
+	var currentRightIntents = [Int: [StickyCell]]()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,32 +161,86 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 //	}
 	
 	func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+		let stickyNote = session.items.first!.localObject as! StickyNote
+		let result = StickyHelper.getDragResult(for: stickyNote, from: session.location(in: collectionView), in: collectionView)
 		
-		// if we have a destination index path (ie, drag is hovering over existing sticky notes)
-		if let destinationIndexPath = destinationIndexPath, let hoveringCell = collectionView.cellForItem(at: destinationIndexPath) as? StickyCell {
-			
-			// if the drag is not over an original sticky note
-			if !session.items.contains(where: { ($0.localObject as! StickyNote).indexPath == destinationIndexPath }) {
-				
-				let hoveringSticky = StickyHelper.getSticky(at: destinationIndexPath)!
-				
-				// if the drag is not in the same index path position as last update
-				if destinationIndexPath != previousHoverIndexPath {
-					previousHoverCells.forEach { $0.displayMoveRightIntent(display: false) }
-					previousHoverCells.removeAll()
-					
-					previousHoverCells.append(hoveringCell)
-					previousHoverCells.append(contentsOf: StickyHelper.getStickies(pushedBy: hoveringSticky).map({collectionView.cellForItem(at: $0.indexPath) as! StickyCell}))
-					previousHoverCells.forEach { $0.displayMoveRightIntent(display: true) }
-					previousHoverIndexPath = destinationIndexPath
-				}
+		if let currentResult = currentDragResults[session.hash] {
+			//we have a current result
+			if currentResult == result {
+				//nothing has changed, let's bail
+				return UICollectionViewDropProposal(operation: .move, intent: .unspecified)
 			}
-		} else {
-			// not hovering over any
-			previousHoverCells.forEach { $0.displayMoveRightIntent(display: false) }
+			
+			//things HAVE changed, remove any placeholder views
+			removeDragPlaceholders(for: session)
+			
+			currentRightIntents[session.hash]?.forEach { $0.displayMoveRightIntent(display: false) }
 		}
 		
+		// add placeholder views!
+		switch result {
+		case .EmptyPosition(let position):
+			print("Empty position: \(position)")
+			_ = createPlaceholderView(at: position, forSession: session)
+		case .OccupiedPosition(let position, let existingSticky):
+			print("Occupied position: \(position)")
+			_ = createPlaceholderView(at: position, forSession: session)
+			for pushedSticky in StickyHelper.getStickies(pushedBy: existingSticky, includingPusher: true) {
+				let cell = collectionView.cellForItem(at: pushedSticky.indexPath) as! StickyCell
+				cell.displayMoveRightIntent(display: true)
+				if currentRightIntents[session.hash] == nil {
+					currentRightIntents[session.hash] = [StickyCell]()
+				}
+				currentRightIntents[session.hash]!.append(cell)
+			}
+		case .NewSection(let position, let after, let before):
+			print("New section not yet implemented!")
+		case .EndOfSection(let position):
+			print("Not supporting end of section yet!")
+		case .OutOfBounds:
+			print("Not supporting out of bounds yet!")
+		case .SamePosition:
+			print("Same position!")
+		}
+		
+		currentDragResults[session.hash] = result
+		
 		return UICollectionViewDropProposal(operation: .move, intent: .unspecified)
+	}
+	
+	func createPlaceholderView(at position:StickyGridPosition, forSession session:UIDropSession) -> UIView {
+		let view = UIView(frame: position.getFrame(withContentHeight: collectionView!.bounds.height))
+		view.cornerRadius = 8
+		view.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 0.8, alpha: 0.9)
+		view.alpha = 0
+		let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {
+			view.alpha = 1
+		}
+		animator.startAnimation()
+		view.layer.zPosition = -0.5
+		collectionView!.addSubview(view)
+		if currentDragPlaceholders[session.hash] == nil {
+			currentDragPlaceholders[session.hash] = [UIView]()
+		}
+		currentDragPlaceholders[session.hash]!.append(view)
+		return view
+	}
+	
+	func removeDragPlaceholders(for session:UIDropSession) {
+		if let views = currentDragPlaceholders[session.hash] {
+			let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeOut) {
+				for placeholderView in views {
+					placeholderView.alpha = 0
+				}
+			}
+			animator.addCompletion({ _ in
+				for placeholderView in views {
+					placeholderView.removeFromSuperview()
+				}
+			})
+			animator.startAnimation()
+			currentDragPlaceholders.removeValue(forKey: session.hash)
+		}
 	}
 	
 //	func collectionView(_ collectionView: UICollectionView, dragSessionAllowsMoveOperation session: UIDragSession) -> Bool {
@@ -192,55 +249,68 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 	
 	func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
 		// undo any visual indicators that sticky notes were going to be pushed
-		previousHoverCells.forEach { $0.displayMoveRightIntent(display: false) }
-		previousHoverCells.removeAll()
-		previousHoverIndexPath = nil
+		currentRightIntents[coordinator.session.hash]?.forEach { $0.displayMoveRightIntent(display: false) }
+		removeDragPlaceholders(for: coordinator.session)
+		currentDragResults.removeValue(forKey: coordinator.session.hash)
+		currentRightIntents.removeValue(forKey: coordinator.session.hash)
 		
-		guard let destinationIndexPath = coordinator.destinationIndexPath else {
-			print("Don't support ambiguous drags to any location yet!")
-			return
-		}
 		
 		guard coordinator.items.count == 1 else {
 			print("Don't support multiple stickies in a drag yet!")
 			return
 		}
 		
+		let contentHeight = collectionView.bounds.height
 		let stickyToMove = coordinator.session.items.first!.localObject as! StickyNote
-		guard stickyToMove.indexPath != destinationIndexPath else {
-			print("Moving one sticky to its same position... cancelling the drop")
-			return
-		}
-		
-		// right now moving one sticky to push an existing sticky rightward is the only supported drop type
-		// this is very WIP
-		
-		let section = stickyToMove.section!
-		let existingCell = collectionView.cellForItem(at: destinationIndexPath)!
 		let cellToMove = collectionView.cellForItem(at: stickyToMove.indexPath)!
-		cellToMove.contentView.alpha = 0 // hide the original cell while we drop the preview into the correct spot
+		cellToMove.contentView.alpha = 0
 		
-		// wrapping everything in an animator gives a lot more control
+		let fromSection = stickyToMove.section!
+		var toSection:StickySection?
+		
+		let dragResult = StickyHelper.getDragResult(for: stickyToMove, from: coordinator.session.location(in: collectionView), in: collectionView)
+		
 		let dropAnimator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {
-			
-			// drop the cell preview where the existing cell is
-			coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: existingCell.center))
-			
-			// have the collection view smoothly animate all the cells' new positions
-			collectionView.performBatchUpdates({
-				// this pushes stickies to the right
-				StickyHelper.move(stickyNote: stickyToMove, to: destinationIndexPath)
-			})
+			switch dragResult {
+			case .OutOfBounds:
+				print("Drag end: out of bounds!")
+				
+			case .SamePosition:
+				print("Same position!")
+				
+			case .EmptyPosition(let position):
+				toSection = StickyHelper.getSection(at: position.sectionIndex)
+				coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: position.getFrame(withContentHeight: contentHeight).center))
+				collectionView.performBatchUpdates({
+					StickyHelper.move(stickyNote: stickyToMove, to: position)
+				})
+				
+			case .OccupiedPosition(let position, let existingSticky):
+				toSection = StickyHelper.getSection(at: position.sectionIndex)
+				coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: position.getFrame(withContentHeight: contentHeight).center))
+				collectionView.performBatchUpdates({
+					StickyHelper.move(stickyNote: stickyToMove, andPush: existingSticky)
+				})
+				
+			case .EndOfSection(let position):
+//				toSection = StickyHelper.getSection(at: position.sectionIndex)
+				print("Drag end: end of section, not yet implemented")
+				
+			case .NewSection(let position, let after, let before):
+//				toSection = StickyHelper.getSection(at: position.sectionIndex)
+				print("Drag end: new section, not yet implemented!")
+			}
 		}
 		
-		// when the drop and other animations are complete...
 		dropAnimator.addCompletion { _ in
-			
 			// make the real cell visible again
 			cellToMove.contentView.alpha = 1
 			
 			// update all cells' indexes so they're correctly ordered (not sure if super necessary)
-			section.refreshStickyIndexes()
+			fromSection.refreshStickyIndexes()
+			if toSection != nil && toSection != fromSection {
+				toSection!.refreshStickyIndexes()
+			}
 			
 			// section.refreshStickyIndexes doesn't actually save these new values (maybe move to StickyHelper?)
 			try! StickyHelper.managedContext.save()
@@ -252,6 +322,4 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 		// don't forget to start the animator!
 		dropAnimator.startAnimation()
 	}
-	
-	
 }

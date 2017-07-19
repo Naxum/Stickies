@@ -30,6 +30,8 @@ class StickyCell: UICollectionViewCell {
 		moveIntentAnimation?.stopAnimation(true)
 		moveIntentAnimation = nil
 		contentView.transform = CGAffineTransform.identity
+		alpha = 1
+		contentView.alpha = 1
     }
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {

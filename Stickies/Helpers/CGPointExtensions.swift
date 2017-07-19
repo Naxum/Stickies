@@ -28,6 +28,10 @@ extension CGPoint {
     static func + (left: CGPoint, right: CGPoint) -> CGPoint {
         return CGPoint(x: left.x + right.x, y: left.y + right.y)
     }
+	
+	static func - (left: CGPoint, right: CGPoint) -> CGPoint {
+		return CGPoint(x: left.x - right.x, y: left.y - right.y)
+	}
     
     static func * (left: CGPoint, right: CGFloat) -> CGPoint {
         return CGPoint(x: left.x * right, y: left.y * right)
@@ -43,4 +47,12 @@ extension CGSize {
 		width = ratio
 		height = ratio
 	}
+	
+	static func + (left:CGSize, right:CGSize) -> CGSize {
+		return CGSize(width: left.width + right.width, height: left.height + right.height)
+	}
+}
+
+extension CGRect {
+	var center:CGPoint { return CGPoint(x: midX, y: midY) }
 }
