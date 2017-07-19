@@ -289,7 +289,7 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 				toSection = StickyHelper.getSection(at: position.sectionIndex)
 				coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: position.getFrame(withContentHeight: contentHeight).center))
 				collectionView.performBatchUpdates({
-					StickyHelper.move(stickyNote: stickyToMove, andPush: existingSticky)
+					StickyHelper.move(stickyNote: stickyToMove, byPushing: existingSticky)
 				})
 				
 			case .EndOfSection(let position):

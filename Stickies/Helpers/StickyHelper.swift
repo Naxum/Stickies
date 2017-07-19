@@ -138,7 +138,7 @@ class StickyHelper: NSObject {
 		try! managedContext.save()
 	}
 	
-	static func move(stickyNote:StickyNote, andPush noteToPush: StickyNote) {
+	static func move(stickyNote:StickyNote, byPushing noteToPush: StickyNote) {
 		if stickyNote.section != noteToPush.section {
 			// TODO: handle moving across sections
 			print("We can't handle that yet!")
