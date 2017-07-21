@@ -10,7 +10,10 @@ import CoreData
 import CoreGraphics
 
 extension StickyBoard {
-	var activeSections:Set<StickySection> { return (sections as! Set<StickySection>).filter { !$0.isTrashSection } }
+	var activeSections:[StickySection] {
+		let sectionSet:Set<StickySection> = (sections as! Set<StickySection>).filter({ !$0.isTrashSection })
+		return sectionSet.sorted(by: {$0.index < $1.index})
+	}
 	
 	func getSectionFrame(sectionIndex:Int, withContentHeight height:CGFloat) throws -> CGRect {
 		guard let section = activeSections.first(where: {$0.index == sectionIndex}) else {
@@ -27,7 +30,7 @@ extension StickyBoard {
 				print("Could not find section at \(index) - major issue!")
 				throw StickyBoardError.SectionNotInBoard
 			}
-			let sectionOuterWidth = section.getInnerWidth(withContentHeight: height) + (StickyGridSettings.sectionPadding * 2)
+			let sectionOuterWidth = currentSection.getInnerWidth(withContentHeight: height) + (StickyGridSettings.sectionPadding * 2)
 			if section == currentSection {
 				return CGRect(x: boardWidth + boardPadding, y: boardPadding, width: sectionOuterWidth, height: height - (boardPadding * 2))
 			}
@@ -69,6 +72,16 @@ extension StickySection {
 				currentIndex += 1
 			}
 		}
+	}
+	
+	func cullEmptyColumns() {
+		for x in 0...maxGridX {
+			if !activeStickies.contains(where: { $0.localX == x }) {
+				activeStickies.filter({ $0.localX > x }).forEach { $0.localX -= 1 }
+			}
+		}
+		
+		refreshMaxGridX()
 	}
 	
 	func refreshMaxGridX() {

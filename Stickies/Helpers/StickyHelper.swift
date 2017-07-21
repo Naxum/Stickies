@@ -122,41 +122,48 @@ class StickyHelper: NSObject {
 		try! managedContext.save()
 	}
 	
-	static func move(stickyNote:StickyNote, to position:StickyGridPosition) {
-		guard stickyNote.section!.index == position.sectionIndex else {
-			print("Hey! That's not currently allowed!")
-			return
-		}
-		
-		stickyNote.localX = Int64(position.gridPosX)
-		stickyNote.localY = Int64(position.gridPosY)
-		
-		stickyNote.section!.refreshMaxGridX()
-		
-		try! managedContext.save()
+	static func insertSection(at index:Int64) {
+		let newSection = StickySection(context: StickyHelper.managedContext)
+		currentBoard.activeSections.filter({ $0.index >= index }).forEach { $0.index += 1}
+		newSection.index = index
+		currentBoard.addToSections(newSection)
 	}
 	
-	static func move(stickyNote:StickyNote, byPushing noteToPush: StickyNote) {
-		if stickyNote.section != noteToPush.section {
-			// TODO: handle moving across sections
-			print("We can't handle that yet!")
-			//refreshMaxX(of: stickyNote.section)
-			return
-		} else {
-			// a sticky already exists here, we need to shift it and all ones on its right one sticky size to the right
-			stickyNote.localX = noteToPush.localX
-			stickyNote.localY = noteToPush.localY
-			getStickies(pushedBy: noteToPush, includingPusher: true).forEach { $0.localX += 1 }
+	static func move(stickyNote:StickyNote, to position:StickyGridPosition) {
+		if stickyNote.section!.index != position.sectionIndex {
+			let fromSection = stickyNote.section
+			fromSection?.removeFromStickies(stickyNote)
+			fromSection?.refreshStickyIndexes()
+			
+			let toSection = getSection(at: position.sectionIndex)!
+			toSection.addToStickies(stickyNote)
+			stickyNote.index = 0
 		}
 		
-		if noteToPush.section != stickyNote.section {
-			let oldSection = stickyNote.section!
-			stickyNote.section!.removeFromStickies(stickyNote)
-			noteToPush.section!.addToStickies(stickyNote)
-			oldSection.refreshMaxGridX()
+		let toSection = getSection(at: position.sectionIndex)!
+		
+		let x = Int64(position.gridPosX)
+		let y = Int64(position.gridPosY)
+		
+		if let existingSticky = toSection.activeStickies.first(where: { $0.localX == x && $0.localY == y }) {
+			getStickies(pushedBy: existingSticky, includingPusher: true).forEach { $0.localX += 1 }
 		}
 		
-		noteToPush.section!.refreshMaxGridX()
+		stickyNote.localX = x
+		stickyNote.localY = y
+		
+		stickyNote.section!.refreshMaxGridX()
+		if stickyNote.section != toSection {
+			let oldSection = stickyNote.section
+			oldSection?.removeFromStickies(stickyNote)
+			oldSection?.refreshStickyIndexes()
+			oldSection?.refreshMaxGridX()
+			
+			toSection.addToStickies(stickyNote)
+		}
+		
+		toSection.refreshStickyIndexes()
+		toSection.refreshMaxGridX()
 		
 		try! managedContext.save()
 	}
@@ -183,28 +190,27 @@ class StickyHelper: NSObject {
 		let interiorY = y - offset
 		let interiorHeight = height - (offset * 2)
 		let heightPercentage = interiorY / interiorHeight
-		return Int(floor(heightPercentage * StickyGridSettings.gridRows))
+		return min(max(Int(floor(heightPercentage * StickyGridSettings.gridRows)), 0), Int(StickyGridSettings.gridRows))
 	}
 	
 	static func getDragResult(for stickyNote:StickyNote, from location:CGPoint, in view:UICollectionView) -> StickyDragResult {
 		let height = view.bounds.height
 		let gridY = getGridPosY(fromY: location.y, inBounds: height)
-		print("GridY: \(gridY)")
 		let newSectionBounds = CGRect(origin: CGPoint(xy: 0), size: CGSize(width: StickyGridSettings.boardPadding, height: height))
 		if newSectionBounds.contains(location) {
-			return .NewSection(position: StickyGridPosition(x: 0, y: gridY, section: -1), after: nil, before: getSection(at: 0)!)
+			return .NewSection(position: StickyGridPosition(x: 0, y: gridY, section: 0), insertAt: 0)
 		}
 		
-		for section in currentBoard.activeSections.sorted(by: { $0.index < $1.index }) {
-			for gridX in 0...Int(section.maxGridX) {
+		for section in currentBoard.activeSections {
+			let maxX = Int(section.maxGridX)
+			for gridX in 0...maxX {
 				let gridPos = StickyGridPosition(x: gridX, y: gridY, section: Int(section.index))
 				let gridFrame = gridPos.getFrame(withContentHeight: height)
 				var hitboxSize = CGSize(width: gridFrame.size.width, height: gridFrame.size.height + StickyGridSettings.gridSpacing)
-				if gridX != Int(section.maxGridX) {
+				if gridX != maxX {
 					hitboxSize = CGSize(width: hitboxSize.width + StickyGridSettings.gridSpacing, height: hitboxSize.height)
 				}
 				let hitbox = CGRect(origin: gridFrame.origin, size: hitboxSize)
-				print("Hitbox size: \(hitboxSize)")
 				
 				if hitbox.contains(location) {
 					//moving to this position!
@@ -222,14 +228,15 @@ class StickyHelper: NSObject {
 			
 			//include the last x spacing from the grids in this rectangle
 			let sectionRect = try! currentBoard.getSectionFrame(section: section, withContentHeight: height)
-			let sectionSpacingRect = CGRect(x: sectionRect.maxX, y: sectionRect.minY, width: StickyGridSettings.gridSpacing + StickyGridSettings.sectionOffsetSpacing, height: sectionRect.height)
+			let sectionSpacingRect = CGRect(x: sectionRect.maxX - StickyGridSettings.gridSpacing, y: sectionRect.minY, width: StickyGridSettings.gridSpacing + StickyGridSettings.sectionOffsetSpacing, height: sectionRect.height)
 			
 			if sectionSpacingRect.contains(location) {
 				//we're between two sections!
-				if location.x <= sectionSpacingRect.minX + StickyGridSettings.gridSpacing {
-					return .EndOfSection(position: StickyGridPosition(x: Int(section.maxGridX) + 1, y: gridY, section: Int(section.index)))
+				if location.x <= sectionSpacingRect.minX + StickyGridSettings.gridSpacing + (StickyGridSettings.sectionOffsetSpacing / 2) {
+					return .EmptyPosition(position: StickyGridPosition(x: Int(section.maxGridX) + 1, y: gridY, section: Int(section.index)))
 				} else {
-					return .NewSection(position: StickyGridPosition(x: 0, y: gridY, section: Int(section.index + 1)), after: section, before: getSection(at: Int(section.index) + 1))
+					let insertIndex = Int(section.index) + 1
+					return .NewSection(position: StickyGridPosition(x: 0, y: gridY, section: insertIndex), insertAt: insertIndex)
 				}
 			}
 		}
@@ -243,8 +250,7 @@ enum StickyDragResult {
 	case SamePosition
 	case EmptyPosition(position:StickyGridPosition)
 	case OccupiedPosition(position:StickyGridPosition, existingSticky:StickyNote)
-	case EndOfSection(position:StickyGridPosition)
-	case NewSection(position:StickyGridPosition, after:StickySection?, before:StickySection?)
+	case NewSection(position:StickyGridPosition, insertAt:Int)
 	
 	static func == (left:StickyDragResult, right: StickyDragResult) -> Bool {
 		switch (left, right) {
@@ -252,8 +258,7 @@ enum StickyDragResult {
 			case (.SamePosition, .SamePosition): return true
 			case let (.EmptyPosition(a1), .EmptyPosition(a2)): return a1 == a2
 			case let (.OccupiedPosition(a1, b1), .OccupiedPosition(a2, b2)): return a1 == a2 && b1 == b2
-			case let (.EndOfSection(a1), .EndOfSection(a2)): return a1 == a2
-			case let (.NewSection(a1, b1, c1), .NewSection(a2, b2, c2)): return a1 == a2 && b1 == b2 && c1 == c2;
+			case let (.NewSection(a1, b1), .NewSection(a2, b2)): return a1 == a2 && b1 == b2
 			default: return false;
 		}
 	}

@@ -193,10 +193,8 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 				}
 				currentRightIntents[session.hash]!.append(cell)
 			}
-		case .NewSection(let position, let after, let before):
+		case .NewSection(let position, let insertAt):
 			print("New section not yet implemented!")
-		case .EndOfSection(let position):
-			print("Not supporting end of section yet!")
 		case .OutOfBounds:
 			print("Not supporting out of bounds yet!")
 		case .SamePosition:
@@ -262,6 +260,7 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 		
 		let contentHeight = collectionView.bounds.height
 		let stickyToMove = coordinator.session.items.first!.localObject as! StickyNote
+		let fromIndexPath = stickyToMove.indexPath
 		let cellToMove = collectionView.cellForItem(at: stickyToMove.indexPath)!
 		cellToMove.contentView.alpha = 0
 		
@@ -272,51 +271,50 @@ extension StickyWallViewController: UICollectionViewDropDelegate {
 		
 		let dropAnimator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {
 			switch dragResult {
-			case .OutOfBounds:
-				print("Drag end: out of bounds!")
-				
+			case .OutOfBounds: fallthrough
 			case .SamePosition:
-				print("Same position!")
+				print("Same position or out of bounds, cancelling.")
 				
 			case .EmptyPosition(let position):
 				toSection = StickyHelper.getSection(at: position.sectionIndex)
-				coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: position.getFrame(withContentHeight: contentHeight).center))
 				collectionView.performBatchUpdates({
 					StickyHelper.move(stickyNote: stickyToMove, to: position)
+					collectionView.moveItem(at: fromIndexPath, to: stickyToMove.indexPath)
 				})
 				
-			case .OccupiedPosition(let position, let existingSticky):
+			case .OccupiedPosition(let position, _):
 				toSection = StickyHelper.getSection(at: position.sectionIndex)
-				coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: position.getFrame(withContentHeight: contentHeight).center))
 				collectionView.performBatchUpdates({
-					StickyHelper.move(stickyNote: stickyToMove, byPushing: existingSticky)
+					StickyHelper.move(stickyNote: stickyToMove, to: position)
+					collectionView.moveItem(at: fromIndexPath, to: stickyToMove.indexPath)
 				})
 				
-			case .EndOfSection(let position):
-//				toSection = StickyHelper.getSection(at: position.sectionIndex)
-				print("Drag end: end of section, not yet implemented")
-				
-			case .NewSection(let position, let after, let before):
-//				toSection = StickyHelper.getSection(at: position.sectionIndex)
-				print("Drag end: new section, not yet implemented!")
+			case .NewSection(let position, let insertAt):
+				collectionView.performBatchUpdates({
+					StickyHelper.insertSection(at: Int64(insertAt))
+					StickyHelper.move(stickyNote: stickyToMove, to: position)
+					collectionView.insertSections([insertAt])
+					collectionView.moveItem(at: fromIndexPath, to: IndexPath(item: 0, section: insertAt))
+				})
 			}
+			
+			coordinator.drop(coordinator.session.items.first!, to: UIDragPreviewTarget(container: collectionView, center: stickyToMove.gridPosition.getFrame(withContentHeight: contentHeight).center))
 		}
 		
 		dropAnimator.addCompletion { _ in
 			// make the real cell visible again
 			cellToMove.contentView.alpha = 1
 			
-			// update all cells' indexes so they're correctly ordered (not sure if super necessary)
+			collectionView.performBatchUpdates({
+				fromSection.cullEmptyColumns()
+				toSection?.cullEmptyColumns()
+			})
+			
 			fromSection.refreshStickyIndexes()
-			if toSection != nil && toSection != fromSection {
-				toSection!.refreshStickyIndexes()
-			}
+			toSection?.refreshStickyIndexes()
 			
 			// section.refreshStickyIndexes doesn't actually save these new values (maybe move to StickyHelper?)
 			try! StickyHelper.managedContext.save()
-			
-			// since there's no more or fewer stickies, we need to manually reload the data
-			collectionView.reloadData()
 		}
 		
 		// don't forget to start the animator!
