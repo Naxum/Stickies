@@ -11,11 +11,8 @@ import UIKit
 /// class with layout helpers and settings
 class StickyGridSettings {
 	
-	///	divisor to get grid size. IE: gridSize = stickySize / gridCellsPerStickySize
-	static let gridCellsPerStickySize:CGFloat = 2
-	
 	/// how many rows can vertically fit into this system
-	static let gridRows:CGFloat = 8
+	static let gridRows:CGFloat = 4
 	
 	/// padding applied to all grid positions
 	static let boardPadding:CGFloat = 16
@@ -30,8 +27,8 @@ class StickyGridSettings {
 	/// returns the square size of a sticky note for UICollectionViewLayoutAttributes.size, based on a view's bounds' height
 	static func getStickySize(forContentHeight height:CGFloat) -> CGFloat {
 		let padding = (boardPadding * 2) + (sectionPadding * 2) //tops and bottoms
-		let maxSpacingY = gridSpacing * (gridRows / gridCellsPerStickySize)
-		return (height - padding - maxSpacingY) / (gridRows / gridCellsPerStickySize)
+		let maxSpacingY = gridSpacing * gridRows
+		return (height - padding - maxSpacingY) / gridRows
 	}
 }
 
@@ -52,8 +49,8 @@ struct StickyGridPosition {
 		let stickySize = StickyGridSettings.getStickySize(forContentHeight: height)
 		let sectionBounds = try! StickyHelper.currentBoard.getSectionFrame(sectionIndex: sectionIndex, withContentHeight: height)
 		let sectionOffset = CGPoint(x: sectionBounds.minX + StickyGridSettings.sectionPadding, y: sectionBounds.minY + StickyGridSettings.sectionPadding)
-		let inbetweenSpacing = (cgPoint / StickyGridSettings.gridCellsPerStickySize) * StickyGridSettings.gridSpacing
-		let stickySpacing = (cgPoint / StickyGridSettings.gridCellsPerStickySize) * stickySize
+		let inbetweenSpacing = cgPoint * StickyGridSettings.gridSpacing
+		let stickySpacing = cgPoint * stickySize
 		return CGRect(origin: sectionOffset + inbetweenSpacing + stickySpacing, size: CGSize(ratio: stickySize))
 		
 	}

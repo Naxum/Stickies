@@ -78,7 +78,7 @@ extension StickySection {
 	func getInnerWidth(withContentHeight height:CGFloat) -> CGFloat {
 		let maxX = CGFloat(maxGridX)
 		let stickySize = StickyGridSettings.getStickySize(forContentHeight: height)
-		return ((maxX / StickyGridSettings.gridCellsPerStickySize) * stickySize) + (StickyGridSettings.gridSpacing * maxX) + (stickySize / 2)
+		return (maxX * stickySize) + (StickyGridSettings.gridSpacing * maxX) + stickySize
 	}
 }
 
