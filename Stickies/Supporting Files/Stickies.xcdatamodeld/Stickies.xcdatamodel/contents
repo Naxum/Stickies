@@ -7,24 +7,36 @@
         <relationship name="sections" toMany="YES" deletionRule="Nullify" destinationEntity="StickySection" inverseName="board" inverseEntity="StickySection" syncable="YES"/>
         <relationship name="trashSection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StickySection" syncable="YES"/>
     </entity>
+    <entity name="StickyImage" representedClassName="StickyImage" syncable="YES" codeGenerationType="class">
+        <attribute name="imageData" attributeType="Binary" syncable="YES"/>
+        <relationship name="thumbnail" maxCount="1" deletionRule="Nullify" destinationEntity="StickyThumbnail" inverseName="fullImage" inverseEntity="StickyThumbnail" syncable="YES"/>
+    </entity>
     <entity name="StickyNote" representedClassName="StickyNote" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="localX" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="localY" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="localX" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="localY" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="removed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="removedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="section" maxCount="1" deletionRule="Nullify" destinationEntity="StickySection" inverseName="stickies" inverseEntity="StickySection" syncable="YES"/>
+        <relationship name="thumbnail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StickyThumbnail" inverseName="stickyNote" inverseEntity="StickyThumbnail" syncable="YES"/>
     </entity>
     <entity name="StickySection" representedClassName="StickySection" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isTrashSection" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="maxGridX" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="board" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StickyBoard" inverseName="sections" inverseEntity="StickyBoard" syncable="YES"/>
+        <relationship name="board" maxCount="1" deletionRule="Nullify" destinationEntity="StickyBoard" inverseName="sections" inverseEntity="StickyBoard" syncable="YES"/>
         <relationship name="stickies" toMany="YES" deletionRule="Nullify" destinationEntity="StickyNote" inverseName="section" inverseEntity="StickyNote" syncable="YES"/>
     </entity>
+    <entity name="StickyThumbnail" representedClassName="StickyThumbnail" syncable="YES" codeGenerationType="class">
+        <attribute name="imageData" attributeType="Binary" syncable="YES"/>
+        <relationship name="fullImage" maxCount="1" deletionRule="Nullify" destinationEntity="StickyImage" inverseName="thumbnail" inverseEntity="StickyImage" syncable="YES"/>
+        <relationship name="stickyNote" maxCount="1" deletionRule="Nullify" destinationEntity="StickyNote" inverseName="thumbnail" inverseEntity="StickyNote" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="StickyBoard" positionX="-63" positionY="-96" width="128" height="120"/>
-        <element name="StickyNote" positionX="324" positionY="-99" width="128" height="135"/>
-        <element name="StickySection" positionX="108" positionY="-90" width="128" height="120"/>
+        <element name="StickyBoard" positionX="-63" positionY="-66" width="128" height="120"/>
+        <element name="StickyNote" positionX="324" positionY="-99" width="128" height="148"/>
+        <element name="StickySection" positionX="126" positionY="-163" width="128" height="118"/>
+        <element name="StickyThumbnail" positionX="306" positionY="99" width="128" height="88"/>
+        <element name="StickyImage" positionX="313" positionY="234" width="128" height="75"/>
     </elements>
 </model>
