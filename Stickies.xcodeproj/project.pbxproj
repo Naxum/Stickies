@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B06657B1F23CFB800C7BC94 /* StickyDrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B06657A1F23CFB800C7BC94 /* StickyDrawingViewController.swift */; };
+		9B06657D1F23E12E00C7BC94 /* CollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B06657C1F23E12E00C7BC94 /* CollectionExtensions.swift */; };
 		9B1874561F1BF88100E872B7 /* StickyModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1874551F1BF88100E872B7 /* StickyModelExtensions.swift */; };
 		9B1874581F1BF8B900E872B7 /* StickyNoteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1874571F1BF8B900E872B7 /* StickyNoteProvider.swift */; };
 		9B21EDAE1F1B3BCC00479625 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */; };
 		9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */; };
+		9B6DEC471F23EC1F00F20460 /* DrawingControllerSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */; };
+		9B6DEC491F23F64200F20460 /* StickyDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */; };
+		9B6DEC4C1F23F90A00F20460 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC4B1F23F90A00F20460 /* Shaders.metal */; };
 		9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D491F1476A90002E65E /* AppDelegate.swift */; };
 		9B800D4F1F1476A90002E65E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D4D1F1476A90002E65E /* Main.storyboard */; };
 		9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D501F1476A90002E65E /* Stickies.xcdatamodeld */; };
@@ -26,10 +31,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9B06657A1F23CFB800C7BC94 /* StickyDrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyDrawingViewController.swift; sourceTree = "<group>"; };
+		9B06657C1F23E12E00C7BC94 /* CollectionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtensions.swift; sourceTree = "<group>"; };
 		9B1874551F1BF88100E872B7 /* StickyModelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyModelExtensions.swift; sourceTree = "<group>"; };
 		9B1874571F1BF8B900E872B7 /* StickyNoteProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyNoteProvider.swift; sourceTree = "<group>"; };
 		9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
+		9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingControllerSegue.swift; sourceTree = "<group>"; };
+		9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyDrawingView.swift; sourceTree = "<group>"; };
+		9B6DEC4B1F23F90A00F20460 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		9B800D461F1476A90002E65E /* Stickies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stickies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B800D491F1476A90002E65E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B800D4E1F1476A90002E65E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -57,6 +67,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B0665791F23CF8600C7BC94 /* Sticky Drawing View */ = {
+			isa = PBXGroup;
+			children = (
+				9B06657A1F23CFB800C7BC94 /* StickyDrawingViewController.swift */,
+				9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */,
+				9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */,
+				9B6DEC4B1F23F90A00F20460 /* Shaders.metal */,
+			);
+			path = "Sticky Drawing View";
+			sourceTree = "<group>";
+		};
 		9B1874541F1BF86A00E872B7 /* Sticky Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				9BF1573C1F1AAB8D00058641 /* Helpers */,
+				9B0665791F23CF8600C7BC94 /* Sticky Drawing View */,
 				9B1874541F1BF86A00E872B7 /* Sticky Models */,
 				9BF1573B1F1AAB7700058641 /* Sticky Board View */,
 				9BF1573A1F1AAB1000058641 /* Sticky Wall Collection View */,
@@ -133,6 +155,7 @@
 				9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */,
 				9BFB48FD1F17246600ABF564 /* StickyHelper.swift */,
 				9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */,
+				9B06657C1F23E12E00C7BC94 /* CollectionExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -208,18 +231,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B6DEC471F23EC1F00F20460 /* DrawingControllerSegue.swift in Sources */,
 				9B21EDAE1F1B3BCC00479625 /* UIViewExtensions.swift in Sources */,
 				9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */,
 				9B1874561F1BF88100E872B7 /* StickyModelExtensions.swift in Sources */,
 				9B1874581F1BF8B900E872B7 /* StickyNoteProvider.swift in Sources */,
 				9BF1573E1F1AABFD00058641 /* StickyGridSettings.swift in Sources */,
+				9B6DEC4C1F23F90A00F20460 /* Shaders.metal in Sources */,
 				9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */,
 				9BF157391F1A9C1E00058641 /* StickySectionBackgroundView.swift in Sources */,
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
 				9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */,
+				9B06657D1F23E12E00C7BC94 /* CollectionExtensions.swift in Sources */,
+				9B06657B1F23CFB800C7BC94 /* StickyDrawingViewController.swift in Sources */,
 				9B800D651F14782C0002E65E /* StickyCell.swift in Sources */,
 				9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */,
+				9B6DEC491F23F64200F20460 /* StickyDrawingView.swift in Sources */,
 				9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

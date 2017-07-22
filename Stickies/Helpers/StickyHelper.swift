@@ -55,6 +55,7 @@ class StickyHelper: NSObject {
 		}
 		
 		let stickyNote = StickyNote(context: managedContext)
+		stickyNote.backgroundColor = [UIColor.yellow, UIColor.red, UIColor.cyan, UIColor.green].random()
 		stickyNote.index = (previousIndex ?? -1) + 1
 		stickyNote.localX = Int64(nextPosition.gridPosX)
 		stickyNote.localY = Int64(nextPosition.gridPosY)

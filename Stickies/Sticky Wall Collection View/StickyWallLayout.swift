@@ -47,6 +47,7 @@ class StickyWallLayout: UICollectionViewLayout {
                 let cellAttributes = StickyWallLayoutAttributes(forCellWith: indexPath)
 				
 				// view size and center are UIKit properties
+				cellAttributes.backgroundColor = stickyNote.backgroundColor
                 cellAttributes.size = cellFrame.size
 				cellAttributes.center = cellFrame.center
 				
@@ -79,11 +80,11 @@ class StickyWallLayout: UICollectionViewLayout {
 }
 
 class StickyWallLayoutAttributes: UICollectionViewLayoutAttributes {
-//	var position:StickyGridPosition!
+	var backgroundColor: UIColor!
 	
-//    override func copy(with zone: NSZone? = nil) -> Any {
-//        let copiedAttributes: StickyWallLayoutAttributes = super.copy(with: zone) as! StickyWallLayoutAttributes
-//        copiedAttributes.position = self.position
-//        return copiedAttributes
-//    }
+    override func copy(with zone: NSZone? = nil) -> Any {
+        let copiedAttributes: StickyWallLayoutAttributes = super.copy(with: zone) as! StickyWallLayoutAttributes
+        copiedAttributes.backgroundColor = self.backgroundColor
+        return copiedAttributes
+    }
 }

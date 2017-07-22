@@ -6,6 +6,7 @@
 //  Copyright © 2017 Jake Sawyer. All rights reserved.
 //
 
+import UIKit
 import CoreData
 import CoreGraphics
 
@@ -96,6 +97,10 @@ extension StickySection {
 }
 
 extension StickyNote {
+	var backgroundColor: UIColor {
+		get { return backgroundColorData as! UIColor }
+		set { backgroundColorData = newValue }
+	}
 	var indexPath:IndexPath { return IndexPath(item: Int(index), section: Int(section!.index)) }
 	var gridPosition:StickyGridPosition { return StickyGridPosition(x: Int(localX), y: Int(localY), section: Int(section!.index)) }
 }

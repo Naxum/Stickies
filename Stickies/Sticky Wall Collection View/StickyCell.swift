@@ -39,8 +39,10 @@ class StickyCell: UICollectionViewCell {
 		
 		contentView.cornerRadius = cornerRadius
 		contentView.clipsToBounds = true
-        //let attributes = layoutAttributes as! StickyWallLayoutAttributes
-        
+		let attributes = layoutAttributes as! StickyWallLayoutAttributes
+		thumbnailView.backgroundColor = attributes.backgroundColor
+		
+		
     }
 	
 	func displayMoveRightIntent(display:Bool) {

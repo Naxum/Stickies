@@ -12,6 +12,7 @@
         <relationship name="thumbnail" maxCount="1" deletionRule="Nullify" destinationEntity="StickyThumbnail" inverseName="fullImage" inverseEntity="StickyThumbnail" syncable="YES"/>
     </entity>
     <entity name="StickyNote" representedClassName="StickyNote" syncable="YES" codeGenerationType="class">
+        <attribute name="backgroundColorData" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="localX" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="localY" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -34,7 +35,7 @@
     </entity>
     <elements>
         <element name="StickyBoard" positionX="-63" positionY="-66" width="128" height="120"/>
-        <element name="StickyNote" positionX="324" positionY="-99" width="128" height="148"/>
+        <element name="StickyNote" positionX="324" positionY="-99" width="128" height="163"/>
         <element name="StickySection" positionX="126" positionY="-163" width="128" height="118"/>
         <element name="StickyThumbnail" positionX="306" positionY="99" width="128" height="88"/>
         <element name="StickyImage" positionX="313" positionY="234" width="128" height="75"/>

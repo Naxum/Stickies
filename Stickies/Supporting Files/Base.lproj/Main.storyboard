@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7jH-ns-YS4">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13137.5"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,19 +14,21 @@
         <!--Sticky Board View Controller-->
         <scene sceneID="MIF-lM-vPf">
             <objects>
-                <viewController id="7jH-ns-YS4" customClass="StickyBoardViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pm6-QW-E54" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController definesPresentationContext="YES" modalPresentationStyle="currentContext" id="7jH-ns-YS4" customClass="StickyBoardViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" id="cKJ-Wo-W5G">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="djm-8X-nZc" userLabel="Top Controls">
-                                <rect key="frame" x="0.0" y="20" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="20" width="1024" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OV4-Il-Hgr">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="60"/>
                                         <state key="normal" title="+ Note"/>
                                         <connections>
                                             <action selector="addNote:" destination="7jH-ns-YS4" eventType="touchUpInside" id="SEX-2K-AHQ"/>
+                                            <segue destination="a5A-Qv-FHS" kind="custom" identifier="DrawingSegue" customClass="DrawingControllerSegue" customModule="Stickies" customModuleProvider="target" id="ygU-28-zgu"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -34,7 +37,7 @@
                                 </constraints>
                             </stackView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0hU-zj-gIs" userLabel="Wall Container View">
-                                <rect key="frame" x="0.0" y="88" width="375" height="579"/>
+                                <rect key="frame" x="0.0" y="88" width="1024" height="680"/>
                                 <connections>
                                     <segue destination="vJq-mW-tCg" kind="embed" id="8uF-IS-9Kz"/>
                                 </connections>
@@ -53,7 +56,6 @@
                         <viewLayoutGuide key="safeArea" id="Z42-UW-G92"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pm6-QW-E54" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-946.39999999999998" y="-98.50074962518741"/>
         </scene>
@@ -62,7 +64,7 @@
             <objects>
                 <collectionViewController id="vJq-mW-tCg" customClass="StickyWallViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="x9P-so-Tu7">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="680"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="e0t-Uw-Rmg">
@@ -81,7 +83,7 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7P4-dK-T0i">
                                             <rect key="frame" x="0.0" y="0.0" width="114" height="114"/>
-                                            <color key="backgroundColor" red="1" green="0.96340591346256732" blue="0.19967913978979579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                     <real key="value" value="0.0"/>
@@ -127,6 +129,77 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vK0-o7-nya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-114.40000000000001" y="-92.203898050974516"/>
+        </scene>
+        <!--Sticky Drawing View Controller-->
+        <scene sceneID="woz-yB-260">
+            <objects>
+                <viewController providesPresentationContextTransitionStyle="YES" modalPresentationStyle="overCurrentContext" id="a5A-Qv-FHS" customClass="StickyDrawingViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" id="UZ5-zN-j1F">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DvZ-uI-fbR" userLabel="Blur Background">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="DzI-wQ-vk0">
+                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="R7U-vp-R19">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                <subviews>
+                                    <mtkView contentMode="scaleToFill" colorPixelFormat="BGRA8Unorm" depthStencilPixelFormat="Depth32Float" translatesAutoresizingMaskIntoConstraints="NO" id="GRk-T2-cvB" customClass="StickyDrawingView" customModule="Stickies" customModuleProvider="target">
+                                        <rect key="frame" x="387" y="259" width="250" height="250"/>
+                                        <color key="backgroundColor" red="1" green="0.2952831722" blue="0.83881354880000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="250" id="2wr-nK-79X"/>
+                                            <constraint firstAttribute="width" constant="250" id="8PC-Oo-WHf"/>
+                                            <constraint firstAttribute="width" secondItem="GRk-T2-cvB" secondAttribute="height" multiplier="1:1" id="TYe-P6-GMx"/>
+                                        </constraints>
+                                        <color key="clearColor" red="1" green="0.40831368150000003" blue="0.3781450321" alpha="1" colorSpace="calibratedRGB"/>
+                                    </mtkView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="GRk-T2-cvB" firstAttribute="centerY" secondItem="R7U-vp-R19" secondAttribute="centerY" id="4db-PZ-DbN"/>
+                                    <constraint firstAttribute="trailing" secondItem="GRk-T2-cvB" secondAttribute="trailing" constant="387" id="brE-xb-TQ1"/>
+                                    <constraint firstAttribute="bottom" secondItem="GRk-T2-cvB" secondAttribute="bottom" constant="249" id="jsw-3R-q9B"/>
+                                    <constraint firstItem="GRk-T2-cvB" firstAttribute="centerX" secondItem="R7U-vp-R19" secondAttribute="centerX" id="wbt-pZ-agE"/>
+                                </constraints>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JgW-cv-j6t">
+                                <rect key="frame" x="937" y="70" width="37" height="30"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="dismiss:" destination="a5A-Qv-FHS" eventType="touchUpInside" id="DDF-K3-bFO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="R7U-vp-R19" firstAttribute="leading" secondItem="UZ5-zN-j1F" secondAttribute="leading" id="2w1-B3-wt8"/>
+                            <constraint firstItem="VDv-3R-7JQ" firstAttribute="trailing" secondItem="JgW-cv-j6t" secondAttribute="trailing" constant="50" id="6Nu-Nc-02r"/>
+                            <constraint firstAttribute="top" secondItem="DvZ-uI-fbR" secondAttribute="top" id="7sy-5E-OkA"/>
+                            <constraint firstAttribute="top" secondItem="R7U-vp-R19" secondAttribute="top" id="HcH-J7-whm"/>
+                            <constraint firstAttribute="trailing" secondItem="DvZ-uI-fbR" secondAttribute="trailing" id="JsX-Ix-Rd1"/>
+                            <constraint firstItem="DvZ-uI-fbR" firstAttribute="leading" secondItem="UZ5-zN-j1F" secondAttribute="leading" id="LFM-4Y-Gz2"/>
+                            <constraint firstAttribute="trailing" secondItem="R7U-vp-R19" secondAttribute="trailing" id="RdN-ID-Q1E"/>
+                            <constraint firstAttribute="bottom" secondItem="R7U-vp-R19" secondAttribute="bottom" id="dhH-VL-xbh"/>
+                            <constraint firstItem="JgW-cv-j6t" firstAttribute="top" secondItem="VDv-3R-7JQ" secondAttribute="top" constant="50" id="pqU-38-YgV"/>
+                            <constraint firstAttribute="bottom" secondItem="DvZ-uI-fbR" secondAttribute="bottom" id="yzm-xy-fgc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="VDv-3R-7JQ"/>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="backgroundVFXView" destination="DvZ-uI-fbR" id="V1f-hh-rVg"/>
+                        <outlet property="drawingView" destination="GRk-T2-cvB" id="cIa-By-ItF"/>
+                        <outlet property="scrollView" destination="R7U-vp-R19" id="urr-lq-ksf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fkU-VF-z6a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-419.53125" y="748.4375"/>
         </scene>
     </scenes>
 </document>
