@@ -12,7 +12,7 @@ import CoreData
 private let reuseIdentifier = "stickyCell"
 
 class StickyWallViewController: UICollectionViewController {
-	
+	var boardController:StickyBoardViewController { return parent as! StickyBoardViewController }
 	var fetchedController:NSFetchedResultsController<StickySection>!
 	var layout:StickyWallLayout!
 //	var previousHoverCells = [StickyCell]()
@@ -82,8 +82,12 @@ class StickyWallViewController: UICollectionViewController {
 		return view
 	}
 
+	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		boardController.drawSeque(for: StickyHelper.getSticky(at: indexPath)!)
+	}
+	
     // MARK: UICollectionViewDelegate
-
+	
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {

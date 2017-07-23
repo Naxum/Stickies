@@ -20,6 +20,16 @@ class StickyDrawingViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		//scroll view frame anchors
+		scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: view.topAnchor)
+		scrollView.frameLayoutGuide.leftAnchor.constraint(equalTo: view.leftAnchor)
+		scrollView.frameLayoutGuide.rightAnchor.constraint(equalTo: view.rightAnchor)
+		scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+		
+		//scroll view content anchors
+		scrollView.contentSize = scrollView.bounds.size
+		drawingView.centerXAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerXAnchor)
+		drawingView.centerYAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerYAnchor)
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -27,6 +37,11 @@ class StickyDrawingViewController: UIViewController {
 		backgroundVFXView.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 0)
 		drawingView.alpha = 0
 		drawingView.backgroundColor = stickyNote.backgroundColor
+		drawingView.clipsToBounds = true
+		drawingView.layer.masksToBounds = true
+		drawingView.layer.borderWidth = 1
+		drawingView.layer.borderColor = UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 0.001).cgColor //literally can't have 0 alpha
+		drawingView.layer.cornerRadius = 32
 		
 		let fakeStickyCell = UIImageView(frame: originalStickyNoteFrame)
 		fakeStickyCell.layer.cornerRadius = 8
@@ -34,15 +49,15 @@ class StickyDrawingViewController: UIViewController {
 		//		fakeStickyCell.image = loadedThumbnail
 		view.addSubview(fakeStickyCell)
 		
-		let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) { [unowned self] in
+		let animator = UIViewPropertyAnimator(duration: 0.4, curve: .easeInOut) { [unowned self] in
 			self.backgroundVFXView.effect = UIBlurEffect(style: .extraLight)
 			self.backgroundVFXView.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 0.5)
 		}
 		animator.addCompletion { _ in
-			let anim2 = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut, animations: {
+			let anim2 = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut, animations: {
 				fakeStickyCell.bounds = self.drawingView.bounds
 				fakeStickyCell.center = self.drawingView.center
-				fakeStickyCell.layer.cornerRadius = 0
+				fakeStickyCell.layer.cornerRadius = 32
 			})
 			anim2.addCompletion({ _ in
 				fakeStickyCell.removeFromSuperview()
@@ -76,5 +91,19 @@ class StickyDrawingViewController: UIViewController {
 		presenter.dismiss(animated: true) {
 			print("Dismissed!")
 		}
+	}
+}
+
+extension StickyDrawingViewController: UIScrollViewDelegate {
+	func scrollViewDidZoom(_ scrollView: UIScrollView) {
+		//TODO: dismiss self if we zoom out real low
+	}
+	
+	func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+		//TODO: dismiss self if we zoom out real low
+	}
+	
+	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+		return drawingView
 	}
 }

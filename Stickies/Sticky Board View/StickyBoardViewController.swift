@@ -11,6 +11,8 @@ import CoreData
 
 class StickyBoardViewController: UIViewController {
 	
+	var stickyToDraw:StickyNote!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -19,8 +21,14 @@ class StickyBoardViewController: UIViewController {
     
     @IBAction func addNote(_ sender: UIButton) {
 		// Hmm
+		let newSticky = StickyHelper.addStickyNote()
+		drawSeque(for: newSticky)
     }
-    
+	
+	func drawSeque(for stickyNote:StickyNote) {
+		stickyToDraw = stickyNote
+		performSegue(withIdentifier: DrawingControllerSegue.identifier, sender: self)
+	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
@@ -35,11 +43,10 @@ class StickyBoardViewController: UIViewController {
 		}
 		
 		let contentHeight = wallController.collectionView!.bounds.height
-		let newSticky = StickyHelper.addStickyNote()
-		let stickyFrame = newSticky.gridPosition.getFrame(withContentHeight: contentHeight)
+		let stickyFrame = stickyToDraw.gridPosition.getFrame(withContentHeight: contentHeight)
 		let frame = wallController.collectionView!.convert(stickyFrame, to: view)
 		
-		drawingController.stickyNote = newSticky
+		drawingController.stickyNote = stickyToDraw
 		drawingController.originalStickyNoteFrame = frame
 	}
 	

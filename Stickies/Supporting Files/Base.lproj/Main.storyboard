@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13137.5"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,7 +13,6 @@
         <!--Sticky Board View Controller-->
         <scene sceneID="MIF-lM-vPf">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pm6-QW-E54" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController definesPresentationContext="YES" modalPresentationStyle="currentContext" id="7jH-ns-YS4" customClass="StickyBoardViewController" customModule="Stickies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" id="cKJ-Wo-W5G">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
@@ -56,6 +54,7 @@
                         <viewLayoutGuide key="safeArea" id="Z42-UW-G92"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pm6-QW-E54" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-946.39999999999998" y="-98.50074962518741"/>
         </scene>
@@ -143,29 +142,30 @@
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="DzI-wQ-vk0">
                                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <mtkView contentMode="scaleToFill" colorPixelFormat="BGRA8Unorm" depthStencilPixelFormat="Depth32Float" translatesAutoresizingMaskIntoConstraints="NO" id="GRk-T2-cvB" customClass="StickyDrawingView" customModule="Stickies" customModuleProvider="target">
+                                            <rect key="frame" x="262" y="134" width="500" height="500"/>
+                                            <color key="backgroundColor" red="1" green="0.2952831722" blue="0.83881354880000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="500" id="ie1-Cv-AGm"/>
+                                                <constraint firstAttribute="width" constant="500" id="qOg-po-usX"/>
+                                            </constraints>
+                                            <color key="clearColor" red="1" green="0.40831368150000003" blue="0.3781450321" alpha="1" colorSpace="calibratedRGB"/>
+                                        </mtkView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="GRk-T2-cvB" firstAttribute="centerY" secondItem="DzI-wQ-vk0" secondAttribute="centerY" id="MF7-4c-mQt"/>
+                                        <constraint firstItem="GRk-T2-cvB" firstAttribute="centerX" secondItem="DzI-wQ-vk0" secondAttribute="centerX" id="NMb-sc-8m4"/>
+                                    </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
                             </visualEffectView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="R7U-vp-R19">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="YES" bounces="NO" scrollEnabled="NO" minimumZoomScale="0.5" maximumZoomScale="3" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R7U-vp-R19">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                                <subviews>
-                                    <mtkView contentMode="scaleToFill" colorPixelFormat="BGRA8Unorm" depthStencilPixelFormat="Depth32Float" translatesAutoresizingMaskIntoConstraints="NO" id="GRk-T2-cvB" customClass="StickyDrawingView" customModule="Stickies" customModuleProvider="target">
-                                        <rect key="frame" x="387" y="259" width="250" height="250"/>
-                                        <color key="backgroundColor" red="1" green="0.2952831722" blue="0.83881354880000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="250" id="2wr-nK-79X"/>
-                                            <constraint firstAttribute="width" constant="250" id="8PC-Oo-WHf"/>
-                                            <constraint firstAttribute="width" secondItem="GRk-T2-cvB" secondAttribute="height" multiplier="1:1" id="TYe-P6-GMx"/>
-                                        </constraints>
-                                        <color key="clearColor" red="1" green="0.40831368150000003" blue="0.3781450321" alpha="1" colorSpace="calibratedRGB"/>
-                                    </mtkView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="GRk-T2-cvB" firstAttribute="centerY" secondItem="R7U-vp-R19" secondAttribute="centerY" id="4db-PZ-DbN"/>
-                                    <constraint firstAttribute="trailing" secondItem="GRk-T2-cvB" secondAttribute="trailing" constant="387" id="brE-xb-TQ1"/>
-                                    <constraint firstAttribute="bottom" secondItem="GRk-T2-cvB" secondAttribute="bottom" constant="249" id="jsw-3R-q9B"/>
-                                    <constraint firstItem="GRk-T2-cvB" firstAttribute="centerX" secondItem="R7U-vp-R19" secondAttribute="centerX" id="wbt-pZ-agE"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="a5A-Qv-FHS" id="h5u-b9-Ndg"/>
+                                </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JgW-cv-j6t">
                                 <rect key="frame" x="937" y="70" width="37" height="30"/>
@@ -176,18 +176,19 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="R7U-vp-R19" firstAttribute="leading" secondItem="UZ5-zN-j1F" secondAttribute="leading" id="2w1-B3-wt8"/>
                             <constraint firstItem="VDv-3R-7JQ" firstAttribute="trailing" secondItem="JgW-cv-j6t" secondAttribute="trailing" constant="50" id="6Nu-Nc-02r"/>
                             <constraint firstAttribute="top" secondItem="DvZ-uI-fbR" secondAttribute="top" id="7sy-5E-OkA"/>
-                            <constraint firstAttribute="top" secondItem="R7U-vp-R19" secondAttribute="top" id="HcH-J7-whm"/>
                             <constraint firstAttribute="trailing" secondItem="DvZ-uI-fbR" secondAttribute="trailing" id="JsX-Ix-Rd1"/>
                             <constraint firstItem="DvZ-uI-fbR" firstAttribute="leading" secondItem="UZ5-zN-j1F" secondAttribute="leading" id="LFM-4Y-Gz2"/>
-                            <constraint firstAttribute="trailing" secondItem="R7U-vp-R19" secondAttribute="trailing" id="RdN-ID-Q1E"/>
-                            <constraint firstAttribute="bottom" secondItem="R7U-vp-R19" secondAttribute="bottom" id="dhH-VL-xbh"/>
                             <constraint firstItem="JgW-cv-j6t" firstAttribute="top" secondItem="VDv-3R-7JQ" secondAttribute="top" constant="50" id="pqU-38-YgV"/>
                             <constraint firstAttribute="bottom" secondItem="DvZ-uI-fbR" secondAttribute="bottom" id="yzm-xy-fgc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="VDv-3R-7JQ"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="R7U-vp-R19"/>
+                            </mask>
+                        </variation>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
