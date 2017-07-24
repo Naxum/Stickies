@@ -24,6 +24,7 @@ class StickyDrawingView: MTKView {
 	fileprivate let inflightSemaphore = DispatchSemaphore(value: 3)
 	fileprivate var vertexBuffer:MTLBuffer!
 	fileprivate var stampBuffer:MTLBuffer!
+	fileprivate var stampCount:Int = 0
 	
 	override init(frame frameRect: CGRect, device: MTLDevice?) {
 		super.init(frame: frameRect, device: device)
@@ -81,19 +82,35 @@ class StickyDrawingView: MTKView {
 		
 		let simpleStamp = Stamp(x: 0, y: 0, white: true, alpha: 0.5, width: 1024, height: 1024, rotation: Float.pi * 0.25)
 		stampBuffer.contents().storeBytes(of: simpleStamp, toByteOffset: 0, as: Stamp.self)
+		stampCount = 1
 		
 		strokeGesture = StrokeGestureRecognizer(target: self, action: #selector(StickyDrawingView.strokeUpdated))
 		addGestureRecognizer(strokeGesture)
 		
-//		isPaused = true
-//		enableSetNeedsDisplay = true
+		isPaused = true
+		enableSetNeedsDisplay = true
 //		framebufferOnly = false
 		
+		setNeedsDisplay()
 		print("Sticky Drawing View Setup!")
 	}
 	
 	@objc func strokeUpdated(gesture:StrokeGestureRecognizer) {
-		print("Stroke being drawn... eventually!")
+		guard gesture.state != .cancelled, gesture.state != .failed else { return }
+		
+		gesture.smoother.smoothedPoints.forEach {
+			let x = ($0.x / Float(bounds.width)) * DrawingSettings.canvasSize
+			let y = ((Float(bounds.height) - $0.y) / Float(bounds.height)) * DrawingSettings.canvasSize
+			let stamp = Stamp(x: x, y: y, white: true, alpha: 0.5, width: 50, height: 50, rotation: 0)
+			stampBuffer.contents().storeBytes(of: stamp, toByteOffset: stampCount * MemoryLayout<Stamp>.stride, as: Stamp.self)
+			stampCount += 1
+		}
+		
+		gesture.smoother.reset()
+		
+		if stampCount > 0 {
+			setNeedsDisplay()
+		}
 	}
 	
     // Only override draw() if you perform custom drawing.
@@ -105,6 +122,7 @@ class StickyDrawingView: MTKView {
 			print("Could not get currentRenderPassDescriptor and/or currentDrawable")
 			return
 		}
+		guard stampCount > 0 else { return }
 		
 		let commandBuffer = commandQueue.makeCommandBuffer()!
 		let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
@@ -114,12 +132,14 @@ class StickyDrawingView: MTKView {
 		renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
 		renderEncoder.setVertexBuffer(stampBuffer, offset: 0, index: 1)
 		renderEncoder.setFragmentTexture(brushTexture, index: 0)
-		renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6, instanceCount: 1)
+		renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6, instanceCount: stampCount)
 		renderEncoder.popDebugGroup()
 		renderEncoder.endEncoding()
 		
 		commandBuffer.present(drawable)
 		commandBuffer.commit()
+		
+		stampCount = 0
     }
 	
 	@objc func update() {

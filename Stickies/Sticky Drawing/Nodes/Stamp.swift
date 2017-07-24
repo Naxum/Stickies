@@ -16,7 +16,7 @@ struct Stamp {
 	init(x:Float, y:Float, white:Bool, alpha:Float = 1, width:Float = 10, height:Float = 10, rotation:Float = 0) {
 		let size = DrawingSettings.canvasSize
 		let halfSize = size / 2
-		let position = GLKVector3Make(x / size, y / size, 0)
+		let position = GLKVector3Make((x - halfSize) / halfSize, (y - halfSize) / halfSize, 0)
 		let scale = GLKVector3Make(width / size, height / size, 1)
 		
 		var m = GLKMatrix4Identity

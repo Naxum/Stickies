@@ -85,12 +85,10 @@
 			isa = PBXGroup;
 			children = (
 				9B9A20791F255792008B5F74 /* Nodes */,
-				9B06657A1F23CFB800C7BC94 /* StickyDrawingViewController.swift */,
+				9B224FC21F262B9800804FE2 /* Strokes */,
+				9B224FC31F262BCE00804FE2 /* Rendering */,
 				9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */,
-				9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */,
-				9B9A20801F2573AC008B5F74 /* TouchSmoother.swift */,
-				9B9A20841F257AE0008B5F74 /* StrokeGestureRecognizer.swift */,
-				9B6DEC4B1F23F90A00F20460 /* Shaders.metal */,
+				9B06657A1F23CFB800C7BC94 /* StickyDrawingViewController.swift */,
 			);
 			path = "Sticky Drawing";
 			sourceTree = "<group>";
@@ -102,6 +100,25 @@
 				9B1874571F1BF8B900E872B7 /* StickyNoteProvider.swift */,
 			);
 			path = "Sticky Models";
+			sourceTree = "<group>";
+		};
+		9B224FC21F262B9800804FE2 /* Strokes */ = {
+			isa = PBXGroup;
+			children = (
+				9B9A20801F2573AC008B5F74 /* TouchSmoother.swift */,
+				9B9A20841F257AE0008B5F74 /* StrokeGestureRecognizer.swift */,
+			);
+			path = Strokes;
+			sourceTree = "<group>";
+		};
+		9B224FC31F262BCE00804FE2 /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				9B1EF5301F259BDB00D559E9 /* DrawingSettings.swift */,
+				9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */,
+				9B6DEC4B1F23F90A00F20460 /* Shaders.metal */,
+			);
+			path = Rendering;
 			sourceTree = "<group>";
 		};
 		9B800D3D1F1476A90002E65E = {
@@ -149,7 +166,6 @@
 		9B9A20791F255792008B5F74 /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				9B1EF5301F259BDB00D559E9 /* DrawingSettings.swift */,
 				9B9A207A1F2557AF008B5F74 /* Vertex.swift */,
 				9B9A207C1F2557F9008B5F74 /* Quad.swift */,
 				9B9A207E1F255C5C008B5F74 /* Stamp.swift */,

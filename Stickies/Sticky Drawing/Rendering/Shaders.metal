@@ -42,7 +42,7 @@ vertex VertexOut pass_vertex(const device VertexIn* v_in [[ buffer(0) ]],
 
 fragment half4 render_vertex(VertexOut v_out [[ stage_in ]],
 							 texture2d<float, access::sample> texture [[ texture(0) ]]) {
-	return half4(v_out.color.r, v_out.color.g, v_out.color.b, v_out.color.a * texture.sample(s, v_out.texcoord).r + 0.1);
+	return half4(v_out.color.r, v_out.color.g, v_out.color.b, v_out.color.a * texture.sample(s, v_out.texcoord).r);
 }
 
 // old
