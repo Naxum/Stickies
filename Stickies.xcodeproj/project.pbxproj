@@ -11,6 +11,7 @@
 		9B06657D1F23E12E00C7BC94 /* CollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B06657C1F23E12E00C7BC94 /* CollectionExtensions.swift */; };
 		9B1874561F1BF88100E872B7 /* StickyModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1874551F1BF88100E872B7 /* StickyModelExtensions.swift */; };
 		9B1874581F1BF8B900E872B7 /* StickyNoteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1874571F1BF8B900E872B7 /* StickyNoteProvider.swift */; };
+		9B1EF5311F259BDB00D559E9 /* DrawingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1EF5301F259BDB00D559E9 /* DrawingSettings.swift */; };
 		9B21EDAE1F1B3BCC00479625 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */; };
 		9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */; };
 		9B6DEC471F23EC1F00F20460 /* DrawingControllerSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */; };
@@ -23,6 +24,12 @@
 		9B800D571F1476A90002E65E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B800D551F1476A90002E65E /* LaunchScreen.storyboard */; };
 		9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D611F1477F10002E65E /* StickyWallViewController.swift */; };
 		9B800D651F14782C0002E65E /* StickyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B800D631F14782C0002E65E /* StickyCell.swift */; };
+		9B9A207B1F2557AF008B5F74 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A207A1F2557AF008B5F74 /* Vertex.swift */; };
+		9B9A207D1F2557F9008B5F74 /* Quad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A207C1F2557F9008B5F74 /* Quad.swift */; };
+		9B9A207F1F255C5C008B5F74 /* Stamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A207E1F255C5C008B5F74 /* Stamp.swift */; };
+		9B9A20811F2573AC008B5F74 /* TouchSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A20801F2573AC008B5F74 /* TouchSmoother.swift */; };
+		9B9A20831F25765C008B5F74 /* CGPathExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A20821F25765C008B5F74 /* CGPathExtensions.swift */; };
+		9B9A20851F257AE0008B5F74 /* StrokeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A20841F257AE0008B5F74 /* StrokeGestureRecognizer.swift */; };
 		9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */; };
 		9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */; };
 		9BF157391F1A9C1E00058641 /* StickySectionBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF157381F1A9C1E00058641 /* StickySectionBackgroundView.swift */; };
@@ -35,6 +42,7 @@
 		9B06657C1F23E12E00C7BC94 /* CollectionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtensions.swift; sourceTree = "<group>"; };
 		9B1874551F1BF88100E872B7 /* StickyModelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyModelExtensions.swift; sourceTree = "<group>"; };
 		9B1874571F1BF8B900E872B7 /* StickyNoteProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyNoteProvider.swift; sourceTree = "<group>"; };
+		9B1EF5301F259BDB00D559E9 /* DrawingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingSettings.swift; sourceTree = "<group>"; };
 		9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
 		9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingControllerSegue.swift; sourceTree = "<group>"; };
@@ -49,6 +57,12 @@
 		9B800D581F1476A90002E65E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B800D611F1477F10002E65E /* StickyWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallViewController.swift; sourceTree = "<group>"; };
 		9B800D631F14782C0002E65E /* StickyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyCell.swift; sourceTree = "<group>"; };
+		9B9A207A1F2557AF008B5F74 /* Vertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
+		9B9A207C1F2557F9008B5F74 /* Quad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quad.swift; sourceTree = "<group>"; };
+		9B9A207E1F255C5C008B5F74 /* Stamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stamp.swift; sourceTree = "<group>"; };
+		9B9A20801F2573AC008B5F74 /* TouchSmoother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchSmoother.swift; sourceTree = "<group>"; };
+		9B9A20821F25765C008B5F74 /* CGPathExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPathExtensions.swift; sourceTree = "<group>"; };
+		9B9A20841F257AE0008B5F74 /* StrokeGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeGestureRecognizer.swift; sourceTree = "<group>"; };
 		9BAEB62C1F1712A800BBC87A /* StickyBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBoardViewController.swift; sourceTree = "<group>"; };
 		9BAEB93C1F147E0B00FBE89A /* StickyWallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyWallLayout.swift; sourceTree = "<group>"; };
 		9BF157381F1A9C1E00058641 /* StickySectionBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickySectionBackgroundView.swift; sourceTree = "<group>"; };
@@ -67,15 +81,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9B0665791F23CF8600C7BC94 /* Sticky Drawing View */ = {
+		9B0665791F23CF8600C7BC94 /* Sticky Drawing */ = {
 			isa = PBXGroup;
 			children = (
+				9B9A20791F255792008B5F74 /* Nodes */,
 				9B06657A1F23CFB800C7BC94 /* StickyDrawingViewController.swift */,
 				9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */,
 				9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */,
+				9B9A20801F2573AC008B5F74 /* TouchSmoother.swift */,
+				9B9A20841F257AE0008B5F74 /* StrokeGestureRecognizer.swift */,
 				9B6DEC4B1F23F90A00F20460 /* Shaders.metal */,
 			);
-			path = "Sticky Drawing View";
+			path = "Sticky Drawing";
 			sourceTree = "<group>";
 		};
 		9B1874541F1BF86A00E872B7 /* Sticky Models */ = {
@@ -107,7 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				9BF1573C1F1AAB8D00058641 /* Helpers */,
-				9B0665791F23CF8600C7BC94 /* Sticky Drawing View */,
+				9B0665791F23CF8600C7BC94 /* Sticky Drawing */,
 				9B1874541F1BF86A00E872B7 /* Sticky Models */,
 				9BF1573B1F1AAB7700058641 /* Sticky Board View */,
 				9BF1573A1F1AAB1000058641 /* Sticky Wall Collection View */,
@@ -127,6 +144,17 @@
 				9B800D531F1476A90002E65E /* Assets.xcassets */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9B9A20791F255792008B5F74 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				9B1EF5301F259BDB00D559E9 /* DrawingSettings.swift */,
+				9B9A207A1F2557AF008B5F74 /* Vertex.swift */,
+				9B9A207C1F2557F9008B5F74 /* Quad.swift */,
+				9B9A207E1F255C5C008B5F74 /* Stamp.swift */,
+			);
+			path = Nodes;
 			sourceTree = "<group>";
 		};
 		9BF1573A1F1AAB1000058641 /* Sticky Wall Collection View */ = {
@@ -152,6 +180,7 @@
 		9BF1573C1F1AAB8D00058641 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				9B9A20821F25765C008B5F74 /* CGPathExtensions.swift */,
 				9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */,
 				9BFB48FD1F17246600ABF564 /* StickyHelper.swift */,
 				9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */,
@@ -233,22 +262,29 @@
 			files = (
 				9B6DEC471F23EC1F00F20460 /* DrawingControllerSegue.swift in Sources */,
 				9B21EDAE1F1B3BCC00479625 /* UIViewExtensions.swift in Sources */,
+				9B9A20811F2573AC008B5F74 /* TouchSmoother.swift in Sources */,
 				9BAEB93D1F147E0B00FBE89A /* StickyWallLayout.swift in Sources */,
 				9B1874561F1BF88100E872B7 /* StickyModelExtensions.swift in Sources */,
+				9B9A207B1F2557AF008B5F74 /* Vertex.swift in Sources */,
 				9B1874581F1BF8B900E872B7 /* StickyNoteProvider.swift in Sources */,
 				9BF1573E1F1AABFD00058641 /* StickyGridSettings.swift in Sources */,
 				9B6DEC4C1F23F90A00F20460 /* Shaders.metal in Sources */,
 				9BAEB62D1F1712A800BBC87A /* StickyBoardViewController.swift in Sources */,
+				9B9A20831F25765C008B5F74 /* CGPathExtensions.swift in Sources */,
 				9BF157391F1A9C1E00058641 /* StickySectionBackgroundView.swift in Sources */,
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
+				9B9A207F1F255C5C008B5F74 /* Stamp.swift in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
+				9B9A207D1F2557F9008B5F74 /* Quad.swift in Sources */,
 				9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */,
+				9B1EF5311F259BDB00D559E9 /* DrawingSettings.swift in Sources */,
 				9B06657D1F23E12E00C7BC94 /* CollectionExtensions.swift in Sources */,
 				9B06657B1F23CFB800C7BC94 /* StickyDrawingViewController.swift in Sources */,
 				9B800D651F14782C0002E65E /* StickyCell.swift in Sources */,
 				9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */,
 				9B6DEC491F23F64200F20460 /* StickyDrawingView.swift in Sources */,
 				9B800D621F1477F10002E65E /* StickyWallViewController.swift in Sources */,
+				9B9A20851F257AE0008B5F74 /* StrokeGestureRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

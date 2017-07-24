@@ -9,6 +9,12 @@
 import Foundation
 import CoreGraphics
 
+extension CGFloat {
+	func lerp(to other:CGFloat, by percent:CGFloat) -> CGFloat {
+		return self + (other - self) * percent
+	}
+}
+
 extension CGPoint {
     init(xy: CGFloat) {
         x = xy
@@ -23,6 +29,10 @@ extension CGPoint {
 	init (y: CGFloat) {
 		x = 0
 		self.y = y
+	}
+	
+	func lerp(to other:CGPoint, by percent:CGFloat) -> CGPoint {
+		return CGPoint(x: self.x.lerp(to: other.x, by: percent), y: self.y.lerp(to: other.y, by: percent))
 	}
     
     static func + (left: CGPoint, right: CGPoint) -> CGPoint {
