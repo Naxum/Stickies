@@ -8,23 +8,34 @@
 
 import UIKit
 import MetalKit
+import GLKit
 
 class StickyDrawingView: MTKView {
+	static let frameCount = 3
+	static let stampBufferOffset = 512 * MemoryLayout<Stamp>.stride
+	
 	// universal
 	fileprivate var pipelineState:MTLRenderPipelineState!
 	fileprivate var commandQueue:MTLCommandQueue!
-	fileprivate var timer:CADisplayLink!
+	
+	// timers
+	fileprivate let semaphore = DispatchSemaphore(value: frameCount)
+	
+	// textures
 	fileprivate var brushTexture:MTLTexture!
 	fileprivate var stickyTexture:MTLTexture!
 	
-	// interactions
-	fileprivate var strokeGesture:StrokeGestureRecognizer!
-	
-	// per frame
-	fileprivate let inflightSemaphore = DispatchSemaphore(value: 3)
+	// buffers
 	fileprivate var vertexBuffer:MTLBuffer!
 	fileprivate var stampBuffer:MTLBuffer!
-	fileprivate var stampCount:Int = 0
+	fileprivate var canvasBuffer:MTLBuffer!
+	fileprivate var canvasBytesPerRow:Int = 0
+	
+	// interactions
+	fileprivate var strokeGesture:StrokeGestureRecognizer!
+	fileprivate var frameIndex = 0
+	fileprivate var stampCount = [Int](repeating: 0, count: frameCount)
+	fileprivate var needsAdditionalRender = false
 	
 	override init(frame frameRect: CGRect, device: MTLDevice?) {
 		super.init(frame: frameRect, device: device)
@@ -37,6 +48,7 @@ class StickyDrawingView: MTKView {
 	}
 	
 	func setup() {
+		layer.compositingFilter = [CIFilter(name: "CISubtractBlendMode")!]
 		layer.isOpaque = false
 		
 		device = MTLCreateSystemDefaultDevice()
@@ -65,10 +77,8 @@ class StickyDrawingView: MTKView {
 		pipelineState = try! device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
 		commandQueue = device.makeCommandQueue()!
 		commandQueue.label = "main command queue"
-		timer = CADisplayLink(target: self, selector: #selector(update))
-		timer.preferredFramesPerSecond = UIScreen.main.maximumFramesPerSecond
+		
 		preferredFramesPerSecond = UIScreen.main.maximumFramesPerSecond
-		timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
 		
 		let png = UIImagePNGRepresentation(#imageLiteral(resourceName: "brush_shape"))! //brush_shape image
 		brushTexture = try! MTKTextureLoader(device: device).newTexture(with: png, options: nil)
@@ -76,76 +86,88 @@ class StickyDrawingView: MTKView {
 		vertexBuffer = device.makeBuffer(bytes: Quad().vertices, length: MemoryLayout<Vertex>.stride * 6, options: [])
 		vertexBuffer.label = "vertex buffer"
 		
-		stampBuffer = device.makeBuffer(length: MemoryLayout<Stamp>.size * 3 * 1024, options: [])
+		stampBuffer = device.makeBuffer(length: StickyDrawingView.stampBufferOffset * StickyDrawingView.frameCount, options: [])
 		stampBuffer.label = "stamp buffer"
-		stickyTexture = device.makeTexture(descriptor: MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: 2048, height: 2048, mipmapped: false))!
 		
-		let simpleStamp = Stamp(x: 0, y: 0, white: true, alpha: 0.5, width: 1024, height: 1024, rotation: Float.pi * 0.25)
+		let canvasSize = Int(DrawingSettings.canvasSize)
+		canvasBytesPerRow = canvasSize * MemoryLayout<GLKVector4>.stride
+		canvasBuffer = device.makeBuffer(length: canvasSize * canvasBytesPerRow, options: .cpuCacheModeWriteCombined) //might not need this option
+		canvasBuffer.label = "canvas buffer"
+		
+		let stickyTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: canvasSize, height: canvasSize, mipmapped: false)
+		stickyTextureDescriptor.usage = .renderTarget
+		stickyTexture = device.makeTexture(descriptor: stickyTextureDescriptor)!
+		stickyTexture.label = "sticky canvas texture"
+		
+		let simpleStamp = Stamp(x: 0, y: 0, white: true, alpha: 0.5, width: Float(canvasSize), height: Float(canvasSize), rotation: Float.pi * 0.25)
 		stampBuffer.contents().storeBytes(of: simpleStamp, toByteOffset: 0, as: Stamp.self)
-		stampCount = 1
+		stampCount[frameIndex] += 1
 		
 		strokeGesture = StrokeGestureRecognizer(target: self, action: #selector(StickyDrawingView.strokeUpdated))
 		addGestureRecognizer(strokeGesture)
 		
-		isPaused = true
-		enableSetNeedsDisplay = true
-//		framebufferOnly = false
-		
-		setNeedsDisplay()
 		print("Sticky Drawing View Setup!")
 	}
 	
 	@objc func strokeUpdated(gesture:StrokeGestureRecognizer) {
 		guard gesture.state != .cancelled, gesture.state != .failed else { return }
 		
+		let frameOffset = StickyDrawingView.stampBufferOffset * frameIndex
 		gesture.smoother.smoothedPoints.forEach {
 			let x = ($0.x / Float(bounds.width)) * DrawingSettings.canvasSize
 			let y = ((Float(bounds.height) - $0.y) / Float(bounds.height)) * DrawingSettings.canvasSize
-			let stamp = Stamp(x: x, y: y, white: true, alpha: 0.5, width: 50, height: 50, rotation: 0)
-			stampBuffer.contents().storeBytes(of: stamp, toByteOffset: stampCount * MemoryLayout<Stamp>.stride, as: Stamp.self)
-			stampCount += 1
+			let stamp = Stamp(x: x, y: y, white: true, alpha: 0.25, width: 25, height: 25, rotation: 0)
+			stampBuffer.contents().storeBytes(of: stamp, toByteOffset: frameOffset + stampCount[frameIndex] * MemoryLayout<Stamp>.stride, as: Stamp.self)
+			stampCount[frameIndex] += 1
 		}
 		
-		gesture.smoother.reset()
-		
-		if stampCount > 0 {
-			setNeedsDisplay()
-		}
+		gesture.smoother.continueStroke()
+//		isPaused = false
 	}
 	
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-        // Drawing code
+		semaphore.wait()
+		
 		guard let renderPassDescriptor = currentRenderPassDescriptor,
-			  let drawable = currentDrawable else {
-			print("Could not get currentRenderPassDescriptor and/or currentDrawable")
-			return
+			let drawable = currentDrawable else {
+				print("Could not get currentRenderPassDescriptor and/or currentDrawable")
+				return
 		}
-		guard stampCount > 0 else { return }
+		
+		renderPassDescriptor.colorAttachments[0].loadAction = .load
+		renderPassDescriptor.colorAttachments[0].texture = stickyTexture
 		
 		let commandBuffer = commandQueue.makeCommandBuffer()!
-		let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-		renderEncoder.label = "render quads encoder"
-		renderEncoder.pushDebugGroup("render quads")
-		renderEncoder.setRenderPipelineState(pipelineState)
-		renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-		renderEncoder.setVertexBuffer(stampBuffer, offset: 0, index: 1)
-		renderEncoder.setFragmentTexture(brushTexture, index: 0)
-		renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6, instanceCount: stampCount)
-		renderEncoder.popDebugGroup()
-		renderEncoder.endEncoding()
+		commandBuffer.label = "frame \(frameIndex) command buffer"
+		commandBuffer.addCompletedHandler { [weak self] _ in
+			self?.semaphore.signal()
+		}
+		
+		if stampCount[frameIndex] > 0 {
+			let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+			renderEncoder.label = "render quads encoder"
+			renderEncoder.pushDebugGroup("render quads to canvas")
+			renderEncoder.setRenderPipelineState(pipelineState)
+			renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+			renderEncoder.setVertexBuffer(stampBuffer, offset: StickyDrawingView.stampBufferOffset * frameIndex, index: 1)
+			renderEncoder.setFragmentTexture(brushTexture, index: 0)
+			renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6, instanceCount: stampCount[frameIndex])
+			renderEncoder.popDebugGroup()
+			renderEncoder.endEncoding()
+			needsAdditionalRender = true
+		} else {
+			needsAdditionalRender = false
+		}
+		
+		stickyTexture.getBytes(canvasBuffer.contents(), bytesPerRow: canvasBytesPerRow, from: drawable.texture.region, mipmapLevel: 0)
+		drawable.texture.replace(region: drawable.texture.region, mipmapLevel: 0, withBytes: canvasBuffer.contents(), bytesPerRow: canvasBytesPerRow)
 		
 		commandBuffer.present(drawable)
 		commandBuffer.commit()
 		
-		stampCount = 0
-    }
-	
-	@objc func update() {
-		autoreleasepool {
-			draw()
-		}
+		stampCount[frameIndex] = 0
+		frameIndex = (frameIndex + 1) % StickyDrawingView.frameCount
+//		isPaused = !needsAdditionalRender
 	}
 
 }

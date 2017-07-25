@@ -53,7 +53,11 @@ class TouchSmoother {
 		paths.append(path)
 	}
 	
-	func reset() {
+	func continueStroke() {
+		paths.removeAll()
+	}
+	
+	func startNewStroke() {
 		paths.removeAll()
 		lastMidpoint = nil
 	}

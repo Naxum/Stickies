@@ -28,8 +28,8 @@ class StrokeGestureRecognizer: UIGestureRecognizer {
 			return
 		}
 		
-		smoother.reset()
-		predictiveSmoother.reset()
+		smoother.startNewStroke()
+		predictiveSmoother.startNewStroke()
 		
 		event.coalescedTouches(for: firstTouch)?.forEach {
 			smoother.handle(touch: $0, in: view)
@@ -46,7 +46,7 @@ class StrokeGestureRecognizer: UIGestureRecognizer {
 			return
 		}
 		
-		predictiveSmoother.reset()
+		predictiveSmoother.continueStroke()
 		
 		event.coalescedTouches(for: firstTouch)?.forEach {
 			smoother.handle(touch: $0, in: view)
@@ -63,7 +63,7 @@ class StrokeGestureRecognizer: UIGestureRecognizer {
 			return
 		}
 		
-		predictiveSmoother.reset()
+		predictiveSmoother.continueStroke()
 		
 		event.coalescedTouches(for: firstTouch)?.forEach {
 			smoother.handle(touch: $0, in: view)
@@ -76,8 +76,8 @@ class StrokeGestureRecognizer: UIGestureRecognizer {
 	}
 	
 	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
-		smoother.reset()
-		predictiveSmoother.reset()
+		smoother.startNewStroke()
+		predictiveSmoother.startNewStroke()
 		state = .cancelled
 	}
 	

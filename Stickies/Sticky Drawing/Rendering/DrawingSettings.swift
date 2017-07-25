@@ -9,5 +9,5 @@
 import Foundation
 
 struct DrawingSettings {
-	static let canvasSize:Float = 1024
+	static let canvasSize:Float = 2048
 }
