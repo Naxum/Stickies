@@ -19,6 +19,10 @@ struct Stamp {
 	float4 color;
 };
 
+struct SubtractColor {
+	float4 color;
+};
+
 struct VertexOut {
 	float4 position [[ position ]];
 	float4 color;
@@ -29,7 +33,7 @@ constexpr sampler s = sampler(coord::normalized,
 							  address::clamp_to_zero,
 							  filter::linear);
 
-vertex VertexOut pass_vertex(const device VertexIn* v_in [[ buffer(0) ]],
+vertex VertexOut pass_stamp_vertex(const device VertexIn* v_in [[ buffer(0) ]],
 							 const device Stamp* stamp [[ buffer(1) ]],
 						     uint v_id [[ vertex_id ]],
 							 uint i_id [[ instance_id ]]) {
@@ -43,6 +47,12 @@ vertex VertexOut pass_vertex(const device VertexIn* v_in [[ buffer(0) ]],
 fragment half4 render_vertex(VertexOut v_out [[ stage_in ]],
 							 texture2d<float, access::sample> texture [[ texture(0) ]]) {
 	return half4(v_out.color.r, v_out.color.g, v_out.color.b, v_out.color.a * texture.sample(s, v_out.texcoord).r);
+}
+
+fragment half4 subtract_from_color(VertexOut v_out [[ stage_in ]],
+								   texture2d<float, access::sample> texture [[ texture(0) ]]) {
+	float4 startColor = texture.sample(s, v_out.texcoord);
+	return half4(half3(v_out.color.rgb - startColor.rgb), 1);
 }
 
 // old

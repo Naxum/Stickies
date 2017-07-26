@@ -174,12 +174,21 @@
                                     <action selector="dismiss:" destination="a5A-Qv-FHS" eventType="touchUpInside" id="DDF-K3-bFO"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CMv-ag-TDS">
+                                <rect key="frame" x="50" y="70" width="57" height="30"/>
+                                <state key="normal" title="Drawing"/>
+                                <connections>
+                                    <action selector="toggleErasing:" destination="a5A-Qv-FHS" eventType="touchUpInside" id="UdR-JB-TEM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="VDv-3R-7JQ" firstAttribute="trailing" secondItem="JgW-cv-j6t" secondAttribute="trailing" constant="50" id="6Nu-Nc-02r"/>
                             <constraint firstAttribute="top" secondItem="DvZ-uI-fbR" secondAttribute="top" id="7sy-5E-OkA"/>
                             <constraint firstAttribute="trailing" secondItem="DvZ-uI-fbR" secondAttribute="trailing" id="JsX-Ix-Rd1"/>
                             <constraint firstItem="DvZ-uI-fbR" firstAttribute="leading" secondItem="UZ5-zN-j1F" secondAttribute="leading" id="LFM-4Y-Gz2"/>
+                            <constraint firstItem="CMv-ag-TDS" firstAttribute="top" secondItem="VDv-3R-7JQ" secondAttribute="top" constant="50" id="M4Q-Mf-udK"/>
+                            <constraint firstItem="CMv-ag-TDS" firstAttribute="leading" secondItem="VDv-3R-7JQ" secondAttribute="leading" constant="50" id="QxT-eu-eKi"/>
                             <constraint firstItem="JgW-cv-j6t" firstAttribute="top" secondItem="VDv-3R-7JQ" secondAttribute="top" constant="50" id="pqU-38-YgV"/>
                             <constraint firstAttribute="bottom" secondItem="DvZ-uI-fbR" secondAttribute="bottom" id="yzm-xy-fgc"/>
                         </constraints>

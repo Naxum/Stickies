@@ -15,6 +15,7 @@
 		9B21EDAE1F1B3BCC00479625 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */; };
 		9B2E45361F27F3650088B4E3 /* MTLTextureExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E45351F27F3650088B4E3 /* MTLTextureExtensions.swift */; };
 		9B31CDC91F14942500D995E8 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */; };
+		9B45C2021F281C8F00769F8A /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B45C2011F281C8F00769F8A /* UIColorExtensions.swift */; };
 		9B6DEC471F23EC1F00F20460 /* DrawingControllerSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */; };
 		9B6DEC491F23F64200F20460 /* StickyDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */; };
 		9B6DEC4C1F23F90A00F20460 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 9B6DEC4B1F23F90A00F20460 /* Shaders.metal */; };
@@ -47,6 +48,7 @@
 		9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		9B2E45351F27F3650088B4E3 /* MTLTextureExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLTextureExtensions.swift; sourceTree = "<group>"; };
 		9B31CDC81F14942500D995E8 /* CGPointExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
+		9B45C2011F281C8F00769F8A /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		9B6DEC461F23EC1F00F20460 /* DrawingControllerSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingControllerSegue.swift; sourceTree = "<group>"; };
 		9B6DEC481F23F64200F20460 /* StickyDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyDrawingView.swift; sourceTree = "<group>"; };
 		9B6DEC4B1F23F90A00F20460 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				9B21EDAD1F1B3BCC00479625 /* UIViewExtensions.swift */,
 				9B06657C1F23E12E00C7BC94 /* CollectionExtensions.swift */,
 				9B2E45351F27F3650088B4E3 /* MTLTextureExtensions.swift */,
+				9B45C2011F281C8F00769F8A /* UIColorExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				9BF157391F1A9C1E00058641 /* StickySectionBackgroundView.swift in Sources */,
 				9B800D521F1476A90002E65E /* Stickies.xcdatamodeld in Sources */,
 				9B9A207F1F255C5C008B5F74 /* Stamp.swift in Sources */,
+				9B45C2021F281C8F00769F8A /* UIColorExtensions.swift in Sources */,
 				9B800D4A1F1476A90002E65E /* AppDelegate.swift in Sources */,
 				9B9A207D1F2557F9008B5F74 /* Quad.swift in Sources */,
 				9BFB48FE1F17246600ABF564 /* StickyHelper.swift in Sources */,

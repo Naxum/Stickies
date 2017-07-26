@@ -30,13 +30,13 @@ class StickyDrawingViewController: UIViewController {
 		scrollView.contentSize = scrollView.bounds.size
 		drawingView.centerXAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerXAnchor)
 		drawingView.centerYAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerYAnchor)
+		drawingView.backgroundColor = stickyNote.backgroundColor
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
 		backgroundVFXView.effect = nil
 		backgroundVFXView.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 0)
 		drawingView.alpha = 0
-		drawingView.backgroundColor = stickyNote.backgroundColor
 		drawingView.clipsToBounds = true
 		drawingView.layer.masksToBounds = true
 		drawingView.layer.borderWidth = 1
@@ -81,7 +81,12 @@ class StickyDrawingViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+	
+	@IBAction func toggleErasing(_ sender: UIButton) {
+		drawingView.erasing = !drawingView.erasing
+		sender.titleLabel?.text = drawingView.erasing ? "Erasing" : "Drawing"
+	}
+	
 	@IBAction func dismiss(_ sender: Any) {
 		guard let presenter = presentingViewController else {
 			print("WOAH")

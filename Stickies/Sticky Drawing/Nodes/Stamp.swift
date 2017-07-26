@@ -28,4 +28,16 @@ struct Stamp {
 		let brightness = Float(white ? 1 : 0)
 		color = GLKVector4Make(brightness, brightness, brightness, alpha)
 	}
+	
+	init(matrix:GLKMatrix4, color:GLKVector4) {
+		self.matrix = matrix
+		self.color = color
+	}
+	
+	static func fullscreen(texture:MTLTexture, withColor color:UIColor) -> Stamp {
+		let scale = DrawingSettings.canvasSize / Float(texture.width)
+		var m = GLKMatrix4MakeScale(scale, -scale, 1)
+		m = GLKMatrix4Translate(m, scale * 0.25, scale * 0.25, 0)
+		return Stamp(matrix: m, color: color.vector4)
+	}
 }
